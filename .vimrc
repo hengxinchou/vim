@@ -87,8 +87,8 @@ nnoremap <C-Tab>   <C-W>w
 inoremap <C-Tab>   <C-O><C-W>w
 nnoremap <C-S-Tab> <C-W>W
 inoremap <C-S-Tab> <C-O><C-W>W
-nnoremap <C-A> ggVGY
-map <F6> :NERDTreeToggle<CR>
+"map <C-A> ggVGY
+map <F5> :NERDTreeToggle<CR>
 vnoremap <C-C> "+y
 nnoremap XX :q!<CR>
 inoremap jk <Esc>
@@ -106,20 +106,12 @@ let g:tagbar_width=20
 "Tagbar end
 
 "自动补全
-
 :inoremap ( ()<ESC>i
-
 :inoremap ) <c-r>=ClosePair(')')<CR>
-
 :inoremap { {<CR>}<ESC>O
-
 :inoremap } <c-r>=ClosePair('}')<CR>
-
 :inoremap [ []<ESC>i
-
 :inoremap ] <c-r>=ClosePair(']')<CR>
-
 :inoremap " ""<ESC>i
-
 :inoremap ' ''<ESC>i
 
