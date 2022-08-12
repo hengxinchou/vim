@@ -63,6 +63,7 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'preservim/nerdtree'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'preservim/tagbar'
+Plugin 'yegappan/mru'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -115,3 +116,36 @@ let g:tagbar_width=20
 :inoremap " ""<ESC>i
 :inoremap ' ''<ESC>i
 
+"set undodir=~/.vim/undodir
+
+set backup
+set undofile
+
+""set nobackup
+""set undodir=~/.vim/undodir
+
+if !isdirectory(&undodir)
+  call mkdir(&undodir, 'p', 0700)
+endif
+
+
+if has('mouse')
+  if has('gui_running') || (&term =~ 'xterm' && !has('mac'))
+    set mouse=a
+  else
+    set mouse=nvi
+  endif
+endif
+
+
+
+if !has('gui_running')
+  " 设置文本菜单
+  if has('wildmenu')
+    set wildmenu
+    set cpoptions-=<
+    set wildcharm=<C-Z>
+    nnoremap <F10>      :emenu <C-Z>
+    inoremap <F10> <C-O>:emenu <C-Z>
+  endif
+endif
