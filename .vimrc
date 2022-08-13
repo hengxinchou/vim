@@ -16,7 +16,7 @@ set guifont=Monaco:h18
 :set smartcase
 set hlsearch " 搜索时高亮显示被找到的文本 ":noh 关闭搜索时高亮
 "set nowrapscan " 禁止在搜索到文件两端时重新搜索
-"set incsearch " 输入搜索内容时就显示搜索结果
+"set incsearch "递进搜索, 输入搜索内容时就显示搜索结果
 
 "自动识别paste的语法 start
 if !has('patch-8.0.210') " 进入插入模式时启用括号粘贴模式 let &t_SI .= "\<Esc>[?2004h" " 退出插入模式时停用括号粘贴模式
@@ -79,7 +79,9 @@ filetype plugin indent on    " required
 map <C-A> ggVG
 vnoremap <C-C> "+y
 nnoremap XX :q!<CR>
-map jk <Esc>
+inoremap jk <Esc>
+cnoremap jk <Esc>
+vnoremap jk <Esc>
 nnoremap <Leader>v viw"0p
 vnoremap <Leader>v "0p
 "keymap end
@@ -91,12 +93,17 @@ let NERDTreeWinSize=15
 
 "Tagbar start
 nmap <F8> :TagbarToggle<CR>
-let g:tagbar_width=20
+let g:tagbar_width=40
 "Tagbar end
 
+"fzf start
+nnoremap <F2> :Files<CR>
+"fzf end
+"
 "undoTree start
 nnoremap <F6> :UndotreeToggle<CR>
 "undoTree end
+
 
 "自动补全
 ":inoremap ( ()<ESC>i

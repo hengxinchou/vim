@@ -16,3 +16,4 @@ count=`expr $(git log --pretty=oneline|wc -l) + 1`
 git commit -m "commit -m $count"
 
 git push github main
+git push mayun main
