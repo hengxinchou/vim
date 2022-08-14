@@ -15,6 +15,11 @@ set guifont=Monaco:h18
 :set ignorecase
 :set smartcase
 set hlsearch " 搜索时高亮显示被找到的文本 ":noh 关闭搜索时高亮
+" 经常要取消高亮，所以设置一个快捷键来操作
+nnoremap <Leader>4 :nohlsearch<CR>
+"方便在窗口间跳转，窗口多了，窗口跳转就变得很频繁
+"在Tagbar中过滤，显示使用递进搜索会比较方便，但正常时候不需要启动递进搜索，因为递进搜索容易污染屏幕
+nnoremap <Leader>3 :set incsearch<CR>
 "set nowrapscan " 禁止在搜索到文件两端时重新搜索
 "set incsearch "递进搜索, 输入搜索内容时就显示搜索结果
 
@@ -44,6 +49,7 @@ call vundle#begin()
 "let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+"对git支持很好
 Plugin 'tpope/vim-fugitive'
 
 Plugin 'git://git.wincent.com/command-t.git'
@@ -52,15 +58,18 @@ Plugin 'git://git.wincent.com/command-t.git'
 "Pass the path to set the runtimepath properly.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
+"目录树
 Plugin 'preservim/nerdtree'
 
-"Plugin 'Valloric/YouCompleteMe'
+"各种语言的自动补全，对c/c++语言支持特别好
+Plugin 'Valloric/YouCompleteMe'
 
 "类似idea，文本结构缩略图
 Plugin 'preservim/tagbar'
 
 "最近打开的文件
 Plugin 'yegappan/mru'
+
 "模糊匹配，查找文件，类似Windows的Everything，速度超快
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
@@ -68,42 +77,92 @@ Plugin 'junegunn/fzf.vim'
 "对象增强,例如给一个单词套上引号
 Plugin 'tpope/vim-surround'
 
+"vim默认只能重复默认的命令
+"vim-repeat可以重复插件或者自定义的命令，譬如来自vim-surround的命令
+Plugin 'tpope/vim-repeat'
+
 "撤销树
 Plugin 'mbbill/undotree'
+
+"异步操作，还能继续做点别的，不阻塞
+Plugin 'skywind3000/asyncrun.vim'
+
+"提供uninx的常用命令，它提供的 :Rename 和 :Move 命令，后面跟的参数就是新的名字或路径
+Plugin 'tpope/vim-eunuch'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 "Vundle end
 
-"keymap start
+"General keymap start
+"全选所有内容
 map <C-A> ggVG
+
+"复制选中的内容到系统粘贴板
 vnoremap <C-C> "+y
+
+"快速的不保存就退出，当查看只读文档特别有用，更有效率
 nnoremap XX :q!<CR>
+
+"按<Esc>手指要伸得过长，所以设置快捷键进行快速操作,要非递归的映射，否则映射不成功
 inoremap jk <Esc>
 cnoremap jk <Esc>
 vnoremap jk <Esc>
+
+"快速的替换当前的内容，使用寄存器0，而不是无名寄存器
+"不能使用无名寄存器，因为被替换的内容也会覆盖无名寄存器
 nnoremap <Leader>v viw"0p
 vnoremap <Leader>v "0p
-"keymap end
+
+"显示行号是个两难，阅读代码时不时需要显示行号，但是在写的时候不想看行号，太污染屏幕
+nnoremap <leader>1 :set nu<cr>
+nnoremap <leader>2 :set nonu<cr>
+
+"快速在窗口之间跳转
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+"Quickfix窗口
+
+"修改了.vimrc, vim不需要退出就能加载最新的配置
+"对于目前还在学习vim中的我，这个操作尤其频繁
+nnoremap <Leader>5 :source ~/.vimrc<cr>
+
+"在命令行可以复制之前在文件里yank的文本，例如在:grep 用得还挺多的
+cnoremap <Leader>p <C-R>"
+"General keymap end
+
+
 
 "NERDTree start
-map <F5> :NERDTreeToggle<CR>
-let NERDTreeWinSize=15
+map <F1> :NERDTreeToggle<CR>
+let NERDTreeWinSize=35
 "NERDTree end
-
-"Tagbar start
-nmap <F8> :TagbarToggle<CR>
-let g:tagbar_width=40
-"Tagbar end
 
 "fzf start
 nnoremap <F2> :Files<CR>
 "fzf end
-"
+
+"Tagbar start
+nmap <F3> :TagbarToggle<CR>
+let g:tagbar_width=40
+"Tagbar end
+
 "undoTree start
-nnoremap <F6> :UndotreeToggle<CR>
+nnoremap <F4> :UndotreeToggle<CR>
 "undoTree end
 
+" 用于 quickfix、标签和文件跳转的键映射
+nmap <F7>   :cn<CR>
+nmap <F8>   :cp<CR>
+nmap <M-F7> :copen<CR>
+nmap <M-F8> :cclose<CR>
+nmap <C-F7> :tn<CR>
+nmap <C-F8> :tp<CR>
+nmap <S-F7> :n<CR>
+nmap <S-F8> :prev<CR>
 
 "自动补全
 ":inoremap ( ()<ESC>i
@@ -114,7 +173,7 @@ nnoremap <F6> :UndotreeToggle<CR>
 ":inoremap ] <c-r>=ClosePair(']')<CR>
 ":inoremap " ""<ESC>i
 ":inoremap ' ''<ESC>i
-"
+
 "et undodir=~/.vim/undodir
 
 "设置支持跨会话撤销
@@ -148,7 +207,22 @@ if !has('gui_running')
   endif
 endif
 
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
+map <Leader>tn :tabnew<cr>
+map <Leader>to :tabonly<cr>
+map <Leader>tc :tabclose<cr>
+map <Leader>tm :tabmove
+
+" ctags start
+set tags=./tags;,tags,/usr/local/etc/systags
+" ctags end
+
+" 参考吴咏炜的配置
+
+" 启用vim自带的 man插件, :Man就可以在vim直接查看man手册
+source $VIMRUNTIME/ftplugin/man.vim
+set keywordprg=:Man
+
+" 异步运行命令时打开 quickfix 窗口，高度为 10 行
+let g:asyncrun_open = 10
+
+
