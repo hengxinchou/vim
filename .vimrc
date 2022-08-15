@@ -49,8 +49,10 @@ call vundle#begin()
 "let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-"对git支持很好
+"对git支持
 Plugin 'tpope/vim-fugitive'
+"可以达到vscode/idea的效果，实时查看文件内的变动情况，把变动在左边栏显示出来
+Plugin 'airblade/vim-gitgutter'
 
 Plugin 'git://git.wincent.com/command-t.git'
 
@@ -94,7 +96,6 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 "Vundle end
 
-"General keymap start
 "全选所有内容
 map <C-A> ggVG
 
@@ -113,6 +114,8 @@ vnoremap jk <Esc>
 "不能使用无名寄存器，因为被替换的内容也会覆盖无名寄存器
 nnoremap <Leader>v viw"0p
 vnoremap <Leader>v "0p
+"在命令行可以复制之前在文件里yank的文本，例如在:grep 用得还挺多的
+cnoremap <leader>p <C-R>"
 
 "显示行号是个两难，阅读代码时不时需要显示行号，但是在写的时候不想看行号，太污染屏幕
 nnoremap <leader>1 :set nu<cr>
@@ -124,20 +127,18 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-"Quickfix窗口
+"C-Tab跟Iterm2的keymap冲突，要记得先删除Iterm2的keymap
+nnoremap <C-Tab>   <C-W>w
+inoremap <C-Tab>   <C-O><C-W>w
+nnoremap <C-S-Tab> <C-W>W
+inoremap <C-S-Tab> <C-O><C-W>W
 
 "修改了.vimrc, vim不需要退出就能加载最新的配置
 "对于目前还在学习vim中的我，这个操作尤其频繁
 nnoremap <Leader>5 :source ~/.vimrc<cr>
 
-"在命令行可以复制之前在文件里yank的文本，例如在:grep 用得还挺多的
-cnoremap <Leader>p <C-R>"
-"General keymap end
-
-
-
-"NERDTree start
-map <F1> :NERDTreeToggle<CR>
+"nerdtree start
+map <f1> :nerdtreetoggle<cr>
 let NERDTreeWinSize=35
 "NERDTree end
 
@@ -174,12 +175,9 @@ nmap <S-F8> :prev<CR>
 ":inoremap " ""<ESC>i
 ":inoremap ' ''<ESC>i
 
-"et undodir=~/.vim/undodir
-
 "设置支持跨会话撤销
-"set backup
-"set undofile
 set nobackup
+set undofile
 set undodir=~/.vim/undodir
 
 if !isdirectory(&undodir)
@@ -223,6 +221,19 @@ source $VIMRUNTIME/ftplugin/man.vim
 set keywordprg=:Man
 
 " 异步运行命令时打开 quickfix 窗口，高度为 10 行
-let g:asyncrun_open = 10
+"let g:asyncrun_open = 10
+
+"gitGutter start
+highlight! link SignColumn LineNr
+highlight GitGutterAdd    guifg=#009900 ctermfg=2
+highlight GitGutterChange guifg=#bbbb00 ctermfg=3
+highlight GitGutterDelete guifg=#ff2222 ctermfg=1
+let g:gitgutter_set_sign_backgrounds = 1
+""gitGutter end
 
 
+if has('gui_running')
+  " 不延迟加载菜单（需要放在下面的 source 语句之前）
+  let do_syntax_sel_menu = 1
+  let do_no_lazyload_menus = 1
+endif
