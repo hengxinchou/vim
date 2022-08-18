@@ -1,7 +1,7 @@
 syntax on
 
 set laststatus=2 " 显示状态栏 (默认值为 1, 无法显示状态栏)
-set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)
+"set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)
 "设置在状态行显示的信息
 
 set tabstop=4 " 设定 tab 长度为 4
@@ -20,7 +20,7 @@ nnoremap <Leader>4 :nohlsearch<CR>
 "方便在窗口间跳转，窗口多了，窗口跳转就变得很频繁
 "在Tagbar中过滤，显示使用递进搜索会比较方便，但正常时候不需要启动递进搜索，因为递进搜索容易污染屏幕
 nnoremap <Leader>3 :set incsearch<CR>
-"set nowrapscan " 禁止在搜索到文件两端时重新搜索
+set nowrapscan " 禁止在搜索到文件两端时重新搜索
 "set incsearch "递进搜索, 输入搜索内容时就显示搜索结果
 
 "自动识别paste的语法 start
@@ -91,24 +91,48 @@ Plugin 'skywind3000/asyncrun.vim'
 
 "提供uninx的常用命令，它提供的 :Rename 和 :Move 命令，后面跟的参数就是新的名字或路径
 Plugin 'tpope/vim-eunuch'
+"主题方案
+Plugin 'morhetz/gruvbox'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'mbbill/desertEx'
+"字体
+"Plugin 'tonsky/FiraCode'
+
+
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+"调色工具
+Plugin 'vim-scripts/SyntaxAttr.vim'
+Plugin 'preservim/nerdcommenter'
+Plugin 'mg979/vim-visual-multi'
+
+Plugin 'easymotion/vim-easymotion'
+Plugin 'ap/vim-buftabline'
+
+
+
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 "Vundle end
+
+colorscheme desertEx
+
+"快速的不保存就退出，当查看只读文档特别有用，更有效率
+nnoremap XX :q!<CR>
+
+"按<Esc>手指要伸得过长，所以设置快捷键进行快速操作,要非递归的映射，否则映射不成功
+"还是取消了，影响了正常的输入
+"inoremap jk <Esc>
+"cnoremap jk <Esc>
+"vnoremap jk <Esc>
 
 "全选所有内容
 map <C-A> ggVG
 
 "复制选中的内容到系统粘贴板
 vnoremap <C-C> "+y
-
-"快速的不保存就退出，当查看只读文档特别有用，更有效率
-nnoremap XX :q!<CR>
-
-"按<Esc>手指要伸得过长，所以设置快捷键进行快速操作,要非递归的映射，否则映射不成功
-inoremap jk <Esc>
-cnoremap jk <Esc>
-vnoremap jk <Esc>
 
 "快速的替换当前的内容，使用寄存器0，而不是无名寄存器
 "不能使用无名寄存器，因为被替换的内容也会覆盖无名寄存器
@@ -119,9 +143,7 @@ cnoremap <leader>p <C-R>"
 
 "显示行号是个两难，阅读代码时不时需要显示行号，但是在写的时候不想看行号，太污染屏幕
 nnoremap <leader>1 :set nu<cr>
-nnoremap <leader>2 :set nonu<cr>
-
-"快速在窗口之间跳转
+nnoremap <leader>2 :set nonu<cr> "快速在窗口之间跳转
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
@@ -234,6 +256,46 @@ let g:gitgutter_set_sign_backgrounds = 1
 
 if has('gui_running')
   " 不延迟加载菜单（需要放在下面的 source 语句之前）
-  let do_syntax_sel_menu = 1
-  let do_no_lazyload_menus = 1
+  let do_syntax_sel_menu=1
+  let do_no_lazyload_menus=1
 endif
+
+
+
+if has('termguicolors') &&
+      \($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
+  set termguicolors
+endif
+
+
+"调色工具
+nnoremap <Leader>a :call SyntaxAttr()<CR>
+
+"如果打开一个窗口多个文件，设置自动保存比较好，idea等自动保存
+"vscode其实也会缓存备份，不会丢失
+nnoremap <Leader>6 :set autowrite<CR>
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#overflow_marker = '…'
+let g:airline#extensions#tabline#show_tab_nr = 0
+
+set scrolloff=1
+
+"删除空白行波浪线提示
+:hi NonText guifg=bg
+
+
+"发现打开了相同的文件，自动调回之前的文件
+if v:version >= 800
+	packadd! editexisting
+endif
+
+"调整命令行窗口
+set cmdheight=2
+
+"easy-motion
+"map <Leader> <Plug>(easymotion-prefix)
+
+set shm+=I
