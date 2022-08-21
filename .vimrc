@@ -121,6 +121,12 @@ Plugin 'mg979/vim-visual-multi'
 "Plugin 'mhinz/vim-grepper'
 "Plugin 'tpope/vim-unimpaired'
 
+Plugin 'adah1972/cscope_maps.vim'
+
+Plugin 'iamcco/markdown-preview.nvim'
+"python全家桶
+Plugin 'python-mode/python-mode'
+
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -314,6 +320,12 @@ set cmdheight=2
 "去掉乌干达欢迎语
 set shm+=I
 
-cnoremap <expr>%% getcmdtype() == ':' ? expand('%:h').'/':'%%'
+"快速扩展当前文件所在的绝对路径
+"cnoremap <expr>%% getcmdtype() == ':' ? expand('%:h').'/':'%%'
+
+"markdownpreview 导致我vim加载很卡
+":source %
+":PluginInstall
+":call mkdp#util#install()
 
 
