@@ -1,6 +1,6 @@
 syntax on
 
-set laststatus=2 " 显示状态栏 (默认值为 1, 无法显示状态栏)
+"set laststatus=2 " 显示状态栏 (默认值为 1, 无法显示状态栏)
 "set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)
 "设置在状态行显示的信息
 
@@ -8,8 +8,6 @@ set tabstop=4 " 设定 tab 长度为 4
 "set smartindent " 开启新行时使用智能自动缩进
 set encoding=utf-8
 set history=1000
-set guifont=Monaco:h18
-"set guifont=Source\ Code\ Pro:h18
 
 "当有大写就区分大小写，没有大写字母就不区分大小写
 "要想实现这种功能，必须先设置 ignorecase，再接着设置 smartcase 变量
@@ -111,28 +109,44 @@ Plugin 'preservim/nerdcommenter'
 
 Plugin 'easymotion/vim-easymotion'
 
-
+Plugin 'mg979/vim-visual-multi'
 
 "TODO-learning
-Plugin 'mg979/vim-visual-multi'
 "Plugin 'ap/vim-buftabline'
 "Plugin 'fatih/vim-go'
 "Plugin 'vrothberg/vgrep'
 "Plugin 'mhinz/vim-grepper'
 "Plugin 'tpope/vim-unimpaired'
+Plugin 'uguu-org/vim-matrix-screensaver'
 
 Plugin 'adah1972/cscope_maps.vim'
 
 Plugin 'iamcco/markdown-preview.nvim'
 "python全家桶
 Plugin 'python-mode/python-mode'
+Plugin 'frazrepo/vim-rainbow'
+Plugin 'vim-scripts/LargeFile'
+Plugin 'mattn/calendar-vim'
+Plugin 'vim/killersheep'
+
+
 
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 "Vundle end
 
+
+"set guifont=Monaco:h18
+"set guifont=DejaVu Sans Mono for Powerline:h18
+set guifont=Fira\ Code:h18
+"set guifont=Source\ Code\ Pro:h18
 colorscheme desertEx
+
+if has('termguicolors') &&
+      \($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
+  set termguicolors
+endif
 
 "快速的不保存就退出，当查看只读文档特别有用，更有效率
 nnoremap XX :q!<CR>
@@ -271,20 +285,11 @@ highlight GitGutterDelete guifg=#ff2222 ctermfg=1
 let g:gitgutter_set_sign_backgrounds = 1
 ""gitGutter end
 
-
-if has('gui_running')
+"if has('gui_running')
   " 不延迟加载菜单（需要放在下面的 source 语句之前）
   let do_syntax_sel_menu=1
   let do_no_lazyload_menus=1
-endif
-
-
-
-if has('termguicolors') &&
-      \($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
-  set termguicolors
-endif
-
+"endif
 
 "调色工具
 nnoremap <Leader>a :call SyntaxAttr()<CR>
@@ -293,7 +298,7 @@ nnoremap <Leader>a :call SyntaxAttr()<CR>
 "vscode其实也会缓存备份，不会丢失
 nnoremap <Leader>6 :set autowrite<CR>
 
-let g:airline_powerline_fonts = 1 "这个会让我的airline状态栏乱码
+let g:airline_powerline_fonts = 1 "这个会让我的airline状态栏乱码. 后来发现 guifont要配对应的字体 xxx for powerline
 let g:airline#extensions#tabline#enabled = 1 " 展示顶部的状态栏
 let g:airline#extensions#tabline#buffer_nr_show = 1 " 展示:buffers中的序号，便于通过:buffer number跳转
 let g:airline#extensions#tabline#buffer_idx_mode = 3 " 展示:buffer中的序号,可以通过快捷键快速切换到指定的buffer
@@ -328,4 +333,7 @@ set shm+=I
 ":PluginInstall
 ":call mkdp#util#install()
 
+"vim-rainbow
+au FileType c,cpp,objc,objcpp call rainbow#load()
 
+let g:LargeFile = 100
