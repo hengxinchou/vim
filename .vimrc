@@ -9,6 +9,7 @@ set tabstop=4 " 设定 tab 长度为 4
 set encoding=utf-8
 set history=1000
 set guifont=Monaco:h18
+"set guifont=Source\ Code\ Pro:h18
 
 "当有大写就区分大小写，没有大写字母就不区分大小写
 "要想实现这种功能，必须先设置 ignorecase，再接着设置 smartcase 变量
@@ -104,13 +105,21 @@ Plugin 'vim-airline/vim-airline-themes'
 
 "调色工具
 Plugin 'vim-scripts/SyntaxAttr.vim'
+
+"注释
 Plugin 'preservim/nerdcommenter'
-Plugin 'mg979/vim-visual-multi'
 
 Plugin 'easymotion/vim-easymotion'
-Plugin 'ap/vim-buftabline'
 
 
+
+"TODO-learning
+Plugin 'mg979/vim-visual-multi'
+"Plugin 'ap/vim-buftabline'
+"Plugin 'fatih/vim-go'
+"Plugin 'vrothberg/vgrep'
+"Plugin 'mhinz/vim-grepper'
+"Plugin 'tpope/vim-unimpaired'
 
 
 call vundle#end()            " required
@@ -144,23 +153,25 @@ cnoremap <leader>p <C-R>"
 "显示行号是个两难，阅读代码时不时需要显示行号，但是在写的时候不想看行号，太污染屏幕
 nnoremap <leader>1 :set nu<cr>
 nnoremap <leader>2 :set nonu<cr> "快速在窗口之间跳转
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+" 这样反而会打乱我对<C-W>的使用
+"map <C-j> <C-W>j
+"map <C-k> <C-W>k
+"map <C-h> <C-W>h
+"map <C-l> <C-W>l
 
 "C-Tab跟Iterm2的keymap冲突，要记得先删除Iterm2的keymap
-nnoremap <C-Tab>   <C-W>w
-inoremap <C-Tab>   <C-O><C-W>w
-nnoremap <C-S-Tab> <C-W>W
-inoremap <C-S-Tab> <C-O><C-W>W
+"不需要了，我用得不错
+"nnoremap <C-Tab>   <C-W>w
+"inoremap <C-Tab>   <C-O><C-W>w
+"nnoremap <C-S-Tab> <C-W>W
+"inoremap <C-S-Tab> <C-O><C-W>W
 
 "修改了.vimrc, vim不需要退出就能加载最新的配置
 "对于目前还在学习vim中的我，这个操作尤其频繁
 nnoremap <Leader>5 :source ~/.vimrc<cr>
 
 "nerdtree start
-map <f1> :nerdtreetoggle<cr>
+map <f1> :NERDTreeToggle<cr>
 let NERDTreeWinSize=35
 "NERDTree end
 
@@ -227,6 +238,7 @@ if !has('gui_running')
   endif
 endif
 
+" 不需要了，我用得也不多
 map <Leader>tn :tabnew<cr>
 map <Leader>to :tabonly<cr>
 map <Leader>tc :tabclose<cr>
@@ -275,11 +287,12 @@ nnoremap <Leader>a :call SyntaxAttr()<CR>
 "vscode其实也会缓存备份，不会丢失
 nnoremap <Leader>6 :set autowrite<CR>
 
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#overflow_marker = '…'
-let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline_powerline_fonts = 1 "这个会让我的airline状态栏乱码
+let g:airline#extensions#tabline#enabled = 1 " 展示顶部的状态栏
+let g:airline#extensions#tabline#buffer_nr_show = 1 " 展示:buffers中的序号，便于通过:buffer number跳转
+let g:airline#extensions#tabline#buffer_idx_mode = 3 " 展示:buffer中的序号,可以通过快捷键快速切换到指定的buffer
+let g:airline#extensions#tabline#overflow_marker = '…' "使用 … 来表示省略（单个字符，而非占据三列的三个点），这样可以节约一点屏幕空间。
+"let g:airline#extensions#tabline#show_tab_nr = 0 "关掉tab的展示
 
 set scrolloff=1
 
@@ -298,4 +311,9 @@ set cmdheight=2
 "easy-motion
 "map <Leader> <Plug>(easymotion-prefix)
 
+"去掉乌干达欢迎语
 set shm+=I
+
+cnoremap <expr>%% getcmdtype() == ':' ? expand('%:h').'/':'%%'
+
+
