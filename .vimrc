@@ -53,11 +53,11 @@ Plugin 'tpope/vim-fugitive'
 "可以达到vscode/idea的效果，实时查看文件内的变动情况，把变动在左边栏显示出来
 Plugin 'airblade/vim-gitgutter'
 
-Plugin 'git://git.wincent.com/command-t.git'
+"Plugin 'git://git.wincent.com/command-t.git'
 
 "The sparkup vim script is in a subdirectory of this repo called vim.
 "Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 "目录树
 Plugin 'preservim/nerdtree'
@@ -94,9 +94,13 @@ Plugin 'tpope/vim-eunuch'
 Plugin 'morhetz/gruvbox'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'mbbill/desertEx'
-"字体
-"Plugin 'tonsky/FiraCode'
-
+Plugin 'junegunn/seoul256.vim'
+" 类似vscode
+Plugin 'kaicataldo/material.vim'
+"很漂亮，偏海洋风
+Plugin 'ayu-theme/ayu-vim'
+"类似 sublime
+Plugin 'sickill/vim-monokai'
 
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -117,6 +121,8 @@ Plugin 'mg979/vim-visual-multi'
 "Plugin 'vrothberg/vgrep'
 "Plugin 'mhinz/vim-grepper'
 "Plugin 'tpope/vim-unimpaired'
+
+"类似黑客帝国那样的页面，输入:Matrix 就知道了
 Plugin 'uguu-org/vim-matrix-screensaver'
 
 Plugin 'adah1972/cscope_maps.vim'
@@ -124,9 +130,13 @@ Plugin 'adah1972/cscope_maps.vim'
 Plugin 'iamcco/markdown-preview.nvim'
 "python全家桶
 Plugin 'python-mode/python-mode'
+"对括号有多个层次的颜色，对于嵌套很深的括号，很好看
 Plugin 'frazrepo/vim-rainbow'
+"对大文件的支持，超过设置的就不适用语法高亮等，加快加载速度，很有用！
 Plugin 'vim-scripts/LargeFile'
+"日历
 Plugin 'mattn/calendar-vim'
+"一个游戏
 Plugin 'vim/killersheep'
 
 
@@ -141,24 +151,42 @@ filetype plugin indent on    " required
 "set guifont=DejaVu Sans Mono for Powerline:h18
 set guifont=Fira\ Code:h18
 "set guifont=Source\ Code\ Pro:h18
-colorscheme desertEx
+"colorscheme desertEx
 
-if has('termguicolors') &&
-      \($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
-  set termguicolors
+"colorscheme material
+"let g:material_theme_style = 'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
+"let g:material_theme_style = 'ocean-community' 
+
+"colorscheme seoul256
+"colorscheme seoul256-light
+"set background=light
+
+
+"set termguicolors
+"colorscheme ayu
+"let ayucolor="light"  " for light version of theme
+"let ayucolor="mirage" " for mirage version of theme
+"let ayucolor="dark"   " for dark version of theme
+
+colorscheme monokai
+
+
+
+if has('termguicolors') && 
+						\($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
+	set termguicolors
 endif
 
 "快速的不保存就退出，当查看只读文档特别有用，更有效率
 nnoremap XX :q!<CR>
 
-"按<Esc>手指要伸得过长，所以设置快捷键进行快速操作,要非递归的映射，否则映射不成功
-"还是取消了，影响了正常的输入
+"按<Esc>手指要伸得过长，所以设置快捷键进行快速操作,要非递归的映射，否则映射不成功 "还是取消了，影响了正常的输入
 "inoremap jk <Esc>
 "cnoremap jk <Esc>
 "vnoremap jk <Esc>
 
-"全选所有内容
-map <C-A> ggVG
+"全选所有内容 
+map <leader>aa ggVG
 
 "复制选中的内容到系统粘贴板
 vnoremap <C-C> "+y
@@ -337,3 +365,9 @@ set shm+=I
 au FileType c,cpp,objc,objcpp call rainbow#load()
 
 let g:LargeFile = 100
+
+"au BufNewFile,BufRead *.c			colorscheme ayu |let ayucolor="light" 
+"au BufNewFile,BufRead *.c			let g:material_theme_style = 'lighter' 
+"au FileType c,cpp,objc,objcpp			let g:material_theme_style = 'lighter' 
+au FileType c,cpp,objc,objcpp			set expandtab
+au FileType c,cpp,objc,objcpp			set autoindent
