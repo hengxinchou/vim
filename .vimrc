@@ -162,6 +162,7 @@ set guifont=Fira\ Code:h18
 "set background=light
 
 
+"ayu#mirage偏海洋气息
 "set termguicolors
 "colorscheme ayu
 "let ayucolor="light"  " for light version of theme
@@ -169,6 +170,13 @@ set guifont=Fira\ Code:h18
 "let ayucolor="dark"   " for dark version of theme
 
 colorscheme monokai
+"比较暖色系
+"colorscheme gruvbox
+"比较冷色系
+"colorscheme jellybeans
+"中等，绿色黄色为主
+"colorscheme desertEx
+"colorscheme seoul256
 
 
 
@@ -371,3 +379,9 @@ let g:LargeFile = 100
 "au FileType c,cpp,objc,objcpp			let g:material_theme_style = 'lighter' 
 au FileType c,cpp,objc,objcpp			set expandtab
 au FileType c,cpp,objc,objcpp			set autoindent
+
+"对于阅读西文特别重要，即换行时保持缩进
+set breakindent
+
+"对于直接切换到文件所在目录非常有用
+nnoremap <Leader>cd :lcd %:h<CR>
