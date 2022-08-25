@@ -5,6 +5,12 @@ syntax on
 "设置在状态行显示的信息
 
 set tabstop=4 " 设定 tab 长度为 4
+"set ts=4 跟tabstop同理
+set softtabstop=4 "表示在编辑模式的时候按退格键的时候退回缩进的长度，当使用 expandtab 时特别有用
+set shiftwidth=4 "表示每一级缩进的长度，一般设置成跟 softtabstop 一样
+set expandtab "表示缩进用空格来表示
+set autoindent "自动缩进
+
 "set smartindent " 开启新行时使用智能自动缩进
 set encoding=utf-8
 set history=1000
@@ -138,6 +144,8 @@ Plugin 'vim-scripts/LargeFile'
 Plugin 'mattn/calendar-vim'
 "一个游戏
 Plugin 'vim/killersheep'
+
+Plugin 'mechatroner/rainbow_csv'
 
 
 
@@ -362,7 +370,7 @@ set cmdheight=2
 set shm+=I
 
 "快速扩展当前文件所在的绝对路径
-"cnoremap <expr>%% getcmdtype() == ':' ? expand('%:h').'/':'%%'
+cnoremap <expr>%% getcmdtype() == ':' ? expand('%:h').'/':'%%'
 
 "markdownpreview 导致我vim加载很卡
 ":source %
@@ -385,3 +393,8 @@ set breakindent
 
 "对于直接切换到文件所在目录非常有用
 nnoremap <Leader>cd :lcd %:h<CR>
+
+"cscope使用quickfix进行快速跳转
+set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
+
+"nnoremap <leader>cs :cs find c =expand('cword')
