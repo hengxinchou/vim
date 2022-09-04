@@ -88,6 +88,8 @@ Plugin 'tpope/vim-surround'
 "vim-repeat可以重复插件或者自定义的命令，譬如来自vim-surround的命令
 Plugin 'tpope/vim-repeat'
 
+Plugin 'tpope/vim-unimpaired'
+
 "撤销树
 Plugin 'mbbill/undotree'
 
@@ -126,7 +128,6 @@ Plugin 'mg979/vim-visual-multi'
 "Plugin 'fatih/vim-go'
 "Plugin 'vrothberg/vgrep'
 "Plugin 'mhinz/vim-grepper'
-"Plugin 'tpope/vim-unimpaired'
 
 "类似黑客帝国那样的页面，输入:Matrix 就知道了
 Plugin 'uguu-org/vim-matrix-screensaver'
@@ -202,7 +203,7 @@ nnoremap XX :q!<CR>
 "vnoremap jk <Esc>
 
 "全选所有内容 
-map <leader>aa ggVG
+map <leader>a ggVG
 
 "复制选中的内容到系统粘贴板
 vnoremap <C-C> "+y
@@ -336,7 +337,7 @@ let g:gitgutter_set_sign_backgrounds = 1
 "endif
 
 "调色工具
-nnoremap <Leader>a :call SyntaxAttr()<CR>
+"nnoremap <Leader>a :call SyntaxAttr()<CR>
 
 "如果打开一个窗口多个文件，设置自动保存比较好，idea等自动保存
 "vscode其实也会缓存备份，不会丢失
@@ -398,3 +399,5 @@ nnoremap <Leader>cd :lcd %:h<CR>
 set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 
 "nnoremap <leader>cs :cs find c =expand('cword')
+
+set hidden
