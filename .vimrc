@@ -67,6 +67,8 @@ Plugin 'airblade/vim-gitgutter'
 
 "目录树
 Plugin 'preservim/nerdtree'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plugin 'ryanoasis/vim-devicons'
 
 "各种语言的自动补全，对c/c++语言支持特别好
 Plugin 'Valloric/YouCompleteMe'
@@ -149,6 +151,10 @@ Plugin 'vim/killersheep'
 Plugin 'mechatroner/rainbow_csv'
 
 
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 
 
 call vundle#end()            " required
@@ -158,8 +164,9 @@ filetype plugin indent on    " required
 
 "set guifont=Monaco:h18
 "set guifont=DejaVu Sans Mono for Powerline:h18
-set guifont=Fira\ Code:h18
+"set guifont=Fira\ Code:h22
 "set guifont=Source\ Code\ Pro:h18
+set guifont=FiraCode\ Nerd\ Font:h18
 "colorscheme desertEx
 
 "colorscheme material
@@ -237,7 +244,13 @@ nnoremap <Leader>5 :source ~/.vimrc<cr>
 
 "nerdtree start
 map <f1> :NERDTreeToggle<cr>
-let NERDTreeWinSize=35
+"当打开某个文件时，就把目录切换到该文件的目录下
+let g:NERDTreeChDirMode = 2
+" 如果最后只剩下nerdtree窗口，则直接关闭
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+nnoremap <leader>7 :NERDTreeFind<CR>
+"let NERDTreeWinSize=35
 "NERDTree end
 
 "fzf start
@@ -401,3 +414,6 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 "nnoremap <leader>cs :cs find c =expand('cword')
 
 set hidden
+
+let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
+let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
