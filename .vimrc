@@ -44,122 +44,107 @@ if !has('patch-8.0.210') " 进入插入模式时启用括号粘贴模式 let &t_
 endif
 "自动识别paste的语法 end
 
-"Vundle start
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-"set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-"let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+# Vim-Plug start
+call plug#begin()
 
 "对git支持
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 "可以达到vscode/idea的效果，实时查看文件内的变动情况，把变动在左边栏显示出来
-Plugin 'airblade/vim-gitgutter'
-
-"Plugin 'git://git.wincent.com/command-t.git'
-
-"The sparkup vim script is in a subdirectory of this repo called vim.
-"Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'airblade/vim-gitgutter'
 
 "目录树
-Plugin 'preservim/nerdtree'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plugin 'ryanoasis/vim-devicons'
+Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
 
 "各种语言的自动补全，对c/c++语言支持特别好
-Plugin 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
 
 "类似idea，文本结构缩略图
-Plugin 'preservim/tagbar'
+Plug 'preservim/tagbar'
 
 "最近打开的文件
-Plugin 'yegappan/mru'
+Plug 'yegappan/mru'
 
 "模糊匹配，查找文件，类似Windows的Everything，速度超快
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 "对象增强,例如给一个单词套上引号
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 
 "vim默认只能重复默认的命令
 "vim-repeat可以重复插件或者自定义的命令，譬如来自vim-surround的命令
-Plugin 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
 
-Plugin 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 
 "撤销树
-Plugin 'mbbill/undotree'
+Plug 'mbbill/undotree'
 
 "异步操作，还能继续做点别的，不阻塞
-Plugin 'skywind3000/asyncrun.vim'
+Plug 'skywind3000/asyncrun.vim'
 
 "提供uninx的常用命令，它提供的 :Rename 和 :Move 命令，后面跟的参数就是新的名字或路径
-Plugin 'tpope/vim-eunuch'
+Plug 'tpope/vim-eunuch'
 "主题方案
-Plugin 'morhetz/gruvbox'
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'mbbill/desertEx'
-Plugin 'junegunn/seoul256.vim'
+Plug 'morhetz/gruvbox'
+Plug 'nanotech/jellybeans.vim'
+Plug 'mbbill/desertEx'
+Plug 'junegunn/seoul256.vim'
 " 类似vscode
-Plugin 'kaicataldo/material.vim'
+Plug 'kaicataldo/material.vim'
 "很漂亮，偏海洋风
-Plugin 'ayu-theme/ayu-vim'
+Plug 'ayu-theme/ayu-vim'
 "类似 sublime
-Plugin 'sickill/vim-monokai'
+Plug 'sickill/vim-monokai'
 
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 "调色工具
-Plugin 'vim-scripts/SyntaxAttr.vim'
+Plug 'vim-scripts/SyntaxAttr.vim'
 
 "注释
-Plugin 'preservim/nerdcommenter'
+Plug 'preservim/nerdcommenter'
 
-Plugin 'easymotion/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
 
-Plugin 'mg979/vim-visual-multi'
+Plug 'mg979/vim-visual-multi'
 
 "TODO-learning
-"Plugin 'ap/vim-buftabline'
-"Plugin 'fatih/vim-go'
-"Plugin 'vrothberg/vgrep'
-"Plugin 'mhinz/vim-grepper'
+"Plug 'ap/vim-buftabline'
+"Plug 'fatih/vim-go'
+"Plug 'vrothberg/vgrep'
+"Plug 'mhinz/vim-grepper'
 
 "类似黑客帝国那样的页面，输入:Matrix 就知道了
-Plugin 'uguu-org/vim-matrix-screensaver'
+Plug 'uguu-org/vim-matrix-screensaver'
 
-Plugin 'adah1972/cscope_maps.vim'
+Plug 'adah1972/cscope_maps.vim'
 
-Plugin 'iamcco/markdown-preview.nvim'
+Plug 'iamcco/markdown-preview.nvim'
 "python全家桶
-Plugin 'python-mode/python-mode'
+Plug 'python-mode/python-mode'
 "对括号有多个层次的颜色，对于嵌套很深的括号，很好看
-Plugin 'frazrepo/vim-rainbow'
+Plug 'frazrepo/vim-rainbow'
 "对大文件的支持，超过设置的就不适用语法高亮等，加快加载速度，很有用！
-Plugin 'vim-scripts/LargeFile'
+Plug 'vim-scripts/LargeFile'
 "日历
-Plugin 'mattn/calendar-vim'
+"Plug 'mattn/calendar-vim'
 "一个游戏
-Plugin 'vim/killersheep'
+"Plug 'vim/killersheep'
 
-Plugin 'mechatroner/rainbow_csv'
+Plug 'mechatroner/rainbow_csv'
 
-
-Plugin 'prabirshrestha/async.vim'
-Plugin 'prabirshrestha/asyncomplete.vim'
-Plugin 'prabirshrestha/vim-lsp'
-Plugin 'prabirshrestha/asyncomplete-lsp.vim'
-
-
-call vundle#end()            " required
-filetype plugin indent on    " required
-"Vundle end
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'dhruvasagar/vim-table-mode'
+"Plug 'nelstrom/vim-visual-star-search'
+call plug#end()
+# Vim-Plug end
 
 
 "set guifont=Monaco:h18
@@ -202,7 +187,7 @@ if has('termguicolors') &&
 endif
 
 "快速的不保存就退出，当查看只读文档特别有用，更有效率
-nnoremap XX :q!<CR>
+"nnoremap XX :q!<CR>
 
 "按<Esc>手指要伸得过长，所以设置快捷键进行快速操作,要非递归的映射，否则映射不成功 "还是取消了，影响了正常的输入
 "inoremap jk <Esc>
@@ -217,14 +202,14 @@ vnoremap <C-C> "+y
 
 "快速的替换当前的内容，使用寄存器0，而不是无名寄存器
 "不能使用无名寄存器，因为被替换的内容也会覆盖无名寄存器
-nnoremap <Leader>v viw"0p
-vnoremap <Leader>v "0p
+"nnoremap <Leader>v viw"0p
+"vnoremap <Leader>v "0p
 "在命令行可以复制之前在文件里yank的文本，例如在:grep 用得还挺多的
-cnoremap <leader>p <C-R>"
+"cnoremap <leader>p <C-R>"
 
 "显示行号是个两难，阅读代码时不时需要显示行号，但是在写的时候不想看行号，太污染屏幕
-nnoremap <leader>1 :set nu<cr>
-nnoremap <leader>2 :set nonu<cr> "快速在窗口之间跳转
+"nnoremap <leader>1 :set nu<cr>
+"nnoremap <leader>2 :set nonu<cr> "快速在窗口之间跳转
 " 这样反而会打乱我对<C-W>的使用
 "map <C-j> <C-W>j
 "map <C-k> <C-W>k
@@ -243,12 +228,13 @@ nnoremap <leader>2 :set nonu<cr> "快速在窗口之间跳转
 nnoremap <Leader>5 :source ~/.vimrc<cr>
 
 "nerdtree start
-map <f1> :NERDTreeToggle<cr>
+map <F1> :NERDTreeToggle<cr>
 "当打开某个文件时，就把目录切换到该文件的目录下
 let g:NERDTreeChDirMode = 2
 " 如果最后只剩下nerdtree窗口，则直接关闭
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+"打开目录的这个文件, idea的 always select opened file
 nnoremap <leader>7 :NERDTreeFind<CR>
 "let NERDTreeWinSize=35
 "NERDTree end
@@ -259,7 +245,7 @@ nnoremap <F2> :Files<CR>
 
 "Tagbar start
 nmap <F3> :TagbarToggle<CR>
-let g:tagbar_width=40
+"let g:tagbar_width=40
 "Tagbar end
 
 "undoTree start
@@ -267,14 +253,14 @@ nnoremap <F4> :UndotreeToggle<CR>
 "undoTree end
 
 " 用于 quickfix、标签和文件跳转的键映射
-nmap <F7>   :cn<CR>
-nmap <F8>   :cp<CR>
-nmap <M-F7> :copen<CR>
-nmap <M-F8> :cclose<CR>
-nmap <C-F7> :tn<CR>
-nmap <C-F8> :tp<CR>
-nmap <S-F7> :n<CR>
-nmap <S-F8> :prev<CR>
+"nmap <F7>   :cn<CR>
+"nmap <F8>   :cp<CR>
+"nmap <M-F7> :copen<CR>
+"nmap <M-F8> :cclose<CR>
+"nmap <C-F7> :tn<CR>
+"nmap <C-F8> :tp<CR>
+"nmap <S-F7> :n<CR>
+"nmap <S-F8> :prev<CR>
 
 "自动补全
 ":inoremap ( ()<ESC>i
@@ -311,16 +297,16 @@ if !has('gui_running')
     set wildmenu
     set cpoptions-=<
     set wildcharm=<c-z>
-    nnoremap <f10>      :emenu <c-z>
-    inoremap <f10> <c-o>:emenu <c-z>
+    "nnoremap <f10>      :emenu <c-z>
+    "inoremap <f10> <c-o>:emenu <c-z>
   endif
 endif
 
 " 不需要了，我用得也不多
-map <Leader>tn :tabnew<cr>
-map <Leader>to :tabonly<cr>
-map <Leader>tc :tabclose<cr>
-map <Leader>tm :tabmove
+"map <Leader>tn :tabnew<cr>
+"map <Leader>to :tabonly<cr>
+"map <Leader>tc :tabclose<cr>
+"map <Leader>tm :tabmove
 
 " ctags start
 set tags=./tags;,tags,/usr/local/etc/systags
@@ -413,7 +399,76 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 
 "nnoremap <leader>cs :cs find c =expand('cword')
 
+"不需要强制保存，就可以切换buffer
 set hidden
 
 let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
-let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
+let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder namGo
+
+"LSP start
+"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+" 
+"if executable('pyls')
+"    au User lsp_setup call lsp#register_server({
+"        \ 'name': 'pyls',
+"        \ 'cmd': {server_info->['pyls']},
+"        \ 'whitelist': ['python'],
+"        \ })
+"endif
+"
+"au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+"    \ 'name': 'file',
+"    \ 'whitelist': ['*'],
+"    \ 'priority': 10,
+"    \ 'completor': function('asyncomplete#sources#file#completor')
+"    \ }))
+"
+"LSP start
+
+
+"Markdown 里的表格撰写
+"vim-table-mode start
+function! s:isAtStartOfLine(mapping)
+  let text_before_cursor = getline('.')[0 : col('.')-1]
+  let mapping_pattern = '\V' . escape(a:mapping, '\')
+  let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
+  return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
+endfunction
+
+inoreabbrev <expr> <bar><bar>
+          \ <SID>isAtStartOfLine('\|\|') ?
+          \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
+inoreabbrev <expr> __
+          \ <SID>isAtStartOfLine('__') ?
+          \ '<c-o>:silent! TableModeDisable<cr>' : '__'
+"vim-table-mode end
+
+map <leader>8 :e %:h<CR>
+
+
+"对visual选中内容可以直接搜索
+xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
+
+function! s:VSetSearch(cmdtype)
+  let temp = @s
+  norm! gv"sy
+  let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+  let @s = temp
+endfunction
+
+"只留下当前缓存区，删除其他缓存区
+"map <leader>9 :%bd|e#<CR>
+
+"打开就最大化gvim窗口
+"if has('win32')
+"	au GUIEnter * simalt ~x
+"else
+"	au GUIEnter * call MaximizeWindow()
+"endif
+"
+"function! MaximizeWindow()
+"	silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+"endfunction
