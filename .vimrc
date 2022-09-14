@@ -21,10 +21,10 @@ set history=1000
 :set smartcase
 set hlsearch " 搜索时高亮显示被找到的文本 ":noh 关闭搜索时高亮
 " 经常要取消高亮，所以设置一个快捷键来操作
-nnoremap <Leader>4 :nohlsearch<CR>
+"nnoremap <Leader>4 :nohlsearch<CR>
 "方便在窗口间跳转，窗口多了，窗口跳转就变得很频繁
 "在Tagbar中过滤，显示使用递进搜索会比较方便，但正常时候不需要启动递进搜索，因为递进搜索容易污染屏幕
-nnoremap <Leader>3 :set incsearch<CR>
+"nnoremap <Leader>3 :set incsearch<CR>
 set nowrapscan " 禁止在搜索到文件两端时重新搜索
 "set incsearch "递进搜索, 输入搜索内容时就显示搜索结果
 
@@ -44,7 +44,7 @@ if !has('patch-8.0.210') " 进入插入模式时启用括号粘贴模式 let &t_
 endif
 "自动识别paste的语法 end
 
-# Vim-Plug start
+"Vim-Plug start
 call plug#begin()
 
 "对git支持
@@ -137,14 +137,19 @@ Plug 'vim-scripts/LargeFile'
 
 Plug 'mechatroner/rainbow_csv'
 
+"lsp
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
+
+"tmux
+Plug 'christoomey/vim-tmux-navigator'
+
 Plug 'dhruvasagar/vim-table-mode'
-"Plug 'nelstrom/vim-visual-star-search'
 call plug#end()
-# Vim-Plug end
+"Vim-Plug end
 
 
 "set guifont=Monaco:h18
@@ -370,12 +375,7 @@ set cmdheight=2
 set shm+=I
 
 "快速扩展当前文件所在的绝对路径
-cnoremap <expr>%% getcmdtype() == ':' ? expand('%:h').'/':'%%'
-
-"markdownpreview 导致我vim加载很卡
-":source %
-":PluginInstall
-":call mkdp#util#install()
+"cnoremap <expr>%% getcmdtype() == ':' ? expand('%:h').'/':'%%'
 
 "vim-rainbow
 au FileType c,cpp,objc,objcpp call rainbow#load()
@@ -406,25 +406,25 @@ let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exac
 let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder namGo
 
 "LSP start
-"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
-" 
-"if executable('pyls')
-"    au User lsp_setup call lsp#register_server({
-"        \ 'name': 'pyls',
-"        \ 'cmd': {server_info->['pyls']},
-"        \ 'whitelist': ['python'],
-"        \ })
-"endif
-"
-"au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-"    \ 'name': 'file',
-"    \ 'whitelist': ['*'],
-"    \ 'priority': 10,
-"    \ 'completor': function('asyncomplete#sources#file#completor')
-"    \ }))
-"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+ 
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
 "LSP start
 
 
@@ -445,7 +445,7 @@ inoreabbrev <expr> __
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 "vim-table-mode end
 
-map <leader>8 :e %:h<CR>
+"map <leader>8 :e %:h<CR>
 
 
 "对visual选中内容可以直接搜索
@@ -460,7 +460,12 @@ function! s:VSetSearch(cmdtype)
 endfunction
 
 "只留下当前缓存区，删除其他缓存区
-"map <leader>9 :%bd|e#<CR>
+"map <leader>9 :%bd|e\#<CR>
+
+"quickfix
+map <leader>1 :copen<CR>
+map <leader>2 :cclose<CR>
+
 
 "打开就最大化gvim窗口
 "if has('win32')
