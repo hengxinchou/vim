@@ -1,12 +1,15 @@
 
-"=====================================Basic Settings start==================================
+"=====================================Basic Settings START==================================
 syntax on
+set nocompatible
+set lbr
 set encoding=utf-8
+set backspace=indet,eol,start
 set history=1000
 "对于阅读西文特别重要，即如果单行超过屏幕长度，多余的部分换屏幕行时保持缩进
 set breakindent
 
-"tab start
+"tab START
 "设定 tab 长度为 4
 set tabstop=4 
 "set ts=4 跟tabstop同理
@@ -20,7 +23,7 @@ set expandtab
 set autoindent 
 "开启新行时使用智能自动缩进
 "set smartindent 
-"tab end
+"tab END
 
 "设置在状态行显示的信息
 "当有大写就区分大小写，没有大写字母就不区分大小写
@@ -69,8 +72,7 @@ map <leader>8 :e %:h<CR>
 "对于直接切换到文件所在目录非常有用, 有了:NERDTeeFind和":e %:H"感觉就没什么用了
 "nnoremap <Leader>cd :lcd %:h<CR>
 
-if has('termguicolors') && 
-						\($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
+if has('termguicolors') && ($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
 	set termguicolors
 endif
 "快速的替换当前的内容，使用寄存器0，而不是无名寄存器
@@ -152,7 +154,7 @@ au FileType c,cpp,objc,objcpp			set autoindent
 
 "=====================================Basic Settings END==================================
 
-"Vim-Plug start
+"Vim-Plug START
 call plug#begin()
 "对git支持
 Plug 'tpope/vim-fugitive'
@@ -240,16 +242,16 @@ Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'dhruvasagar/vim-table-mode'
 call plug#end()
-"Vim-Plug end
+"Vim-Plug END
 
-"Airline start
+"Airline START
 let g:airline_powerline_fonts = 1 "这个会让我的airline状态栏乱码. 后来发现 guifont要配对应的字体 xxx for powerline
 let g:airline#extensions#tabline#enabled = 1 " 展示顶部的状态栏
 let g:airline#extensions#tabline#buffer_nr_show = 1 " 展示:buffers中的序号，便于通过:buffer number跳转
 let g:airline#extensions#tabline#buffer_idx_mode = 3 " 展示:buffer中的序号,可以通过快捷键快速切换到指定的buffer
 let g:airline#extensions#tabline#overflow_marker = '…' "使用 … 来表示省略（单个字符，而非占据三列的三个点），这样可以节约一点屏幕空间。
 "let g:airline#extensions#tabline#show_tab_nr = 0 "关掉tab的展示
-"Airline end
+"Airline END
 
 "Cscope
 "cscope使用quickfix进行快速跳转
@@ -257,7 +259,7 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 "nnoremap <leader>cs :cs find c =expand('cword')
 "Cscope
 
-"Font and colorschema Start
+"Font and colorschema START
 "set guifont=Monaco:h18
 "set guifont=DejaVu Sans Mono for Powerline:h18
 "set guifont=Fira\ Code:h22
@@ -284,28 +286,28 @@ colorscheme monokai
 "中等，绿色黄色为主
 "colorscheme desertEx
 "colorscheme seoul256
-"Font and colorschema end
+"Font and colorschema END
 
-"fzf start
+"fzf START
 nnoremap <F2> :Files<CR>
-"fzf end
+"fzf END
 
-"Ctags start
+"Ctags START
 "参考https://www.zhihu.com/question/47691414?utm_id=0
 "set tags=./tags;,tags,/usr/local/etc/systags
 "set tags=./.tags;,.tags
 set tags=./tags;,tags
-"Ctags end
+"Ctags END
 
-"GitGutter start
+"GitGutter START
 highlight! link SignColumn LineNr
 highlight GitGutterAdd    guifg=#009900 ctermfg=2
 highlight GitGutterChange guifg=#bbbb00 ctermfg=3
 highlight GitGutterDelete guifg=#ff2222 ctermfg=1
 let g:gitgutter_set_sign_backgrounds = 1
-"GitGutter end
+"GitGutter END
 
-"Gutentags start
+"Gutentags START
 "https://www.zhihu.com/question/47691414/answer/373700711
 " gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
@@ -322,9 +324,9 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
-"Gutentags start
+"Gutentags END
 
-"LSP start
+"LSP START
 "inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
@@ -394,21 +396,28 @@ endif
 "      \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
 "      \ })
 "endif
-"LSP start
+"LSP START
 
-
-"LargeFile start
+"LargeFile START
 "单位为M
 let g:LargeFile = 100
-"LargeFile end 
+"LargeFile END 
 
-"Netrw start
+"Man START
+" 参考吴咏炜的配置
+" 启用vim自带的 man插件, :Man就可以在vim直接查看man手册
+"source $VIMRUNTIME/ftplugin/man.vim
+"set keywordprg=:Man
+"Man END
+
+
+"Netrw START
 "disable netrw
 "let g:loaded_netrw       = 0
 "let g:loaded_netrwPlugin = 0
-"Netrw end
+"Netrw END
 
-"NERDTree start
+"NERDTree START
 map <F1> :NERDTreeToggle<cr>
 "当打开某个文件时，就把目录切换到该文件的目录下
 let g:NERDTreeChDirMode = 2
@@ -420,20 +429,13 @@ nnoremap <leader>7 :NERDTreeFind<CR>
 "autocmd vimenter * NERDTree
 "指定NERDTree窗口的大小 
 "let NERDTreeWinSizel
-"NERDTree end
+"NERDTree END
 
-"Man start
-" 参考吴咏炜的配置
-" 启用vim自带的 man插件, :Man就可以在vim直接查看man手册
-"source $VIMRUNTIME/ftplugin/man.vim
-"set keywordprg=:Man
-"Man end
-
-"Rainbow start
+"Rainbow START
 au FileType c,cpp,objc,objcpp call rainbow#load()
-"Rainbow end
+"Rainbow END
 
-"Quickfix start
+"Quickfix START
 map <leader>1 :copen<CR>
 map <leader>2 :cclose<CR>
 " 异步运行命令时打开 quickfix 窗口，高度为 10 行
@@ -443,19 +445,19 @@ aug QFClose
     au!
     au WinEnter *  if winnr('$') == 1 && &buftype == "quickfix"|q|endif
 aug END
-"Quickfix end
+"Quickfix END
 
-"SyntaxAttr start
+"SyntaxAttr START
 "调色工具
 "nnoremap <Leader>a :call SyntaxAttr()<CR>
-"SyntaxAttr end
+"SyntaxAttr END
 
-"Tagbar start
+"Tagbar START
 nmap <F3> :TagbarToggle<CR>
 "let g:tagbar_width=40
-"Tagbar end
+"Tagbar END
 
-"Table-mode start
+"Table-mode START
 "Markdown 里的表格撰写
 function! s:isAtStartOfLine(mapping)
   let text_before_cursor = getline('.')[0 : col('.')-1]
@@ -470,9 +472,9 @@ inoreabbrev <expr> <bar><bar>
 inoreabbrev <expr> __
           \ <SID>isAtStartOfLine('__') ?
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
-"Table-mode end
+"Table-mode END
 
-"Visual start
+"Visual START
 "对visual选中内容可以直接搜索
 xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
 xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
@@ -482,8 +484,8 @@ function! s:VSetSearch(cmdtype)
   let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
   let @s = temp
 endfunction
-"Visual end
+"Visual END
 
-"UndoTree start
+"UndoTree START
 nnoremap <F4> :UndotreeToggle<CR>
-"UndoTree end
+"UndoTree END
