@@ -4,7 +4,8 @@ syntax on
 set nocompatible
 set lbr
 set encoding=utf-8
-set backspace=indet,eol,start
+"set backspace=indet,eol,start
+set backspace=2
 set history=1000
 "对于阅读西文特别重要，即如果单行超过屏幕长度，多余的部分换屏幕行时保持缩进
 set breakindent
