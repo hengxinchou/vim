@@ -150,32 +150,6 @@ nnoremap <Leader>6 :set autowrite<CR>
 au FileType c,cpp,objc,objcpp			set expandtab
 au FileType c,cpp,objc,objcpp			set autoindent
 
-"set guifont=Monaco:h18
-"set guifont=DejaVu Sans Mono for Powerline:h18
-"set guifont=Fira\ Code:h22
-"set guifont=Source\ Code\ Pro:h18
-set guifont=FiraCode\ Nerd\ Font:h18
-"colorscheme desertEx
-"colorscheme material
-"let g:material_theme_style = 'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
-"let g:material_theme_style = 'ocean-community' 
-"colorscheme seoul256
-"colorscheme seoul256-light
-"set background=light
-"ayu#mirage偏海洋气息
-"set termguicolors
-"colorscheme ayu
-"let ayucolor="light"  " for light version of theme
-"let ayucolor="mirage" " for mirage version of theme
-"let ayucolor="dark"   " for dark version of theme
-colorscheme monokai
-"比较暖色系
-"colorscheme gruvbox
-"比较冷色系
-"colorscheme jellybeans
-"中等，绿色黄色为主
-"colorscheme desertEx
-"colorscheme seoul256
 "=====================================Basic Settings END==================================
 
 "Vim-Plug start
@@ -282,6 +256,35 @@ let g:airline#extensions#tabline#overflow_marker = '…' "使用 … 来表示�
 set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 "nnoremap <leader>cs :cs find c =expand('cword')
 "Cscope
+
+"Font and colorschema Start
+"set guifont=Monaco:h18
+"set guifont=DejaVu Sans Mono for Powerline:h18
+"set guifont=Fira\ Code:h22
+"set guifont=Source\ Code\ Pro:h18
+set guifont=FiraCode\ Nerd\ Font:h18
+"colorscheme desertEx
+"colorscheme material
+"let g:material_theme_style = 'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
+"let g:material_theme_style = 'ocean-community' 
+"colorscheme seoul256
+"colorscheme seoul256-light
+"set background=light
+"ayu#mirage偏海洋气息
+"set termguicolors
+"colorscheme ayu
+"let ayucolor="light"  " for light version of theme
+"let ayucolor="mirage" " for mirage version of theme
+"let ayucolor="dark"   " for dark version of theme
+colorscheme monokai
+"比较暖色系
+"colorscheme gruvbox
+"比较冷色系
+"colorscheme jellybeans
+"中等，绿色黄色为主
+"colorscheme desertEx
+"colorscheme seoul256
+"Font and colorschema end
 
 "fzf start
 nnoremap <F2> :Files<CR>
