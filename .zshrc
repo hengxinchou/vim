@@ -15,9 +15,9 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # 替换Mac自带的ctags，启动HomeBrew 安装的ctags
-if [[ -n "$(which ctags)" ]];then
-  alias ctags="`brew --prefix`/bin/ctags"
-fi
+#if [[ -n "$(which ctags)" ]];then
+#  alias ctags="`brew --prefix`/bin/ctags"
+#fi
 
 # 使用vim自带的manpager，阅读man文档
 export MANPAGER="vim -M +MANPAGER -"

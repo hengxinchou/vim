@@ -1,211 +1,78 @@
+
+"=====================================Basic Settings start==================================
 syntax on
-
-"set laststatus=2 " 显示状态栏 (默认值为 1, 无法显示状态栏)
-"set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)
-"设置在状态行显示的信息
-
-set tabstop=4 " 设定 tab 长度为 4
-"set ts=4 跟tabstop同理
-set softtabstop=4 "表示在编辑模式的时候按退格键的时候退回缩进的长度，当使用 expandtab 时特别有用
-set shiftwidth=4 "表示每一级缩进的长度，一般设置成跟 softtabstop 一样
-set expandtab "表示缩进用空格来表示
-set autoindent "自动缩进
-
-"set smartindent " 开启新行时使用智能自动缩进
 set encoding=utf-8
 set history=1000
+"对于阅读西文特别重要，即如果单行超过屏幕长度，多余的部分换屏幕行时保持缩进
+set breakindent
 
+"tab start
+"设定 tab 长度为 4
+set tabstop=4 
+"set ts=4 跟tabstop同理
+"表示在编辑模式的时候按退格键的时候退回缩进的长度，当使用 expandtab 时特别有用
+set softtabstop=4 
+"表示每一级缩进的长度，一般设置成跟 softtabstop 一样
+set shiftwidth=4 
+"表示缩进用空格来表示
+set expandtab 
+"自动缩进
+set autoindent 
+"开启新行时使用智能自动缩进
+"set smartindent 
+"tab end
+
+"设置在状态行显示的信息
 "当有大写就区分大小写，没有大写字母就不区分大小写
 "要想实现这种功能，必须先设置 ignorecase，再接着设置 smartcase 变量
 :set ignorecase
 :set smartcase
-set hlsearch " 搜索时高亮显示被找到的文本 ":noh 关闭搜索时高亮
-" 经常要取消高亮，所以设置一个快捷键来操作
-"nnoremap <Leader>4 :nohlsearch<CR>
-"方便在窗口间跳转，窗口多了，窗口跳转就变得很频繁
-"在Tagbar中过滤，显示使用递进搜索会比较方便，但正常时候不需要启动递进搜索，因为递进搜索容易污染屏幕
-"nnoremap <Leader>3 :set incsearch<CR>
-set nowrapscan " 禁止在搜索到文件两端时重新搜索
-"set incsearch "递进搜索, 输入搜索内容时就显示搜索结果
+" 搜索时高亮显示被找到的文本
+set hlsearch 
+"关闭搜索时高亮
+":noh 
+"方便在窗口间跳转，窗口多了，窗口跳转就变得很频繁 \
+"在Tagbar中过滤，显示使用递进搜索会比较方便，但正常时候不需要启动递进搜索，因为递进搜索容易污染屏幕 \
+"set incsearch<CR>
+"禁止在搜索到文件两端时重新搜索
+set nowrapscan 
+"递进搜索, 输入搜索内容时就显示搜索结果
+"set incsearch 
+"不需要强制保存，就可以切换buffer
+set hidden
 
-"自动识别paste的语法 start
-if !has('patch-8.0.210') " 进入插入模式时启用括号粘贴模式 let &t_SI .= "\<Esc>[?2004h" " 退出插入模式时停用括号粘贴模式
-  let &t_EI .= "\<Esc>[?2004l"
-  " 见到 <Esc>[200~ 就调用 XTermPasteBegin
-  inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+"打开就最大化gvim窗口
+"if has('win32')
+"	au GUIEnter * simalt ~x
+"else
+"	au GUIEnter * call MaximizeWindow()
+"endif
+"
+"function! MaximizeWindow()
+"	silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+"endfunction
 
-  function! XTermPasteBegin()
-    " 设置使用 <Esc>[202~ 关闭粘贴模式
-    set pastetoggle=<Esc>[201~
-    " 开启粘贴模式
-    set paste
-    return ""
-  endfunction
-endif
-"自动识别paste的语法 end
+"全选所有内容 
+map <leader>a ggVG
+"复制选中的内容到系统粘贴板
+vnoremap <C-C> "+y
+"快速的不保存就退出，当查看只读文档特别有用，更有效率
+"nnoremap XX :q!<CR>
+"修改了.vimrc, vim不需要退出就能加载最新的配置 \
+"对于目前还在学习vim中的我，这个操作尤其频繁
+nnoremap <Leader>5 :source ~/.vimrc<cr>
 
-"Vim-Plug start
-call plug#begin()
-
-"对git支持
-Plug 'tpope/vim-fugitive'
-"可以达到vscode/idea的效果，实时查看文件内的变动情况，把变动在左边栏显示出来
-Plug 'airblade/vim-gitgutter'
-
-"目录树
-Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
-Plug 'tpope/vim-vinegar'
-
-"各种语言的自动补全，对c/c++语言支持特别好
-"Plug 'Valloric/YouCompleteMe'
-
-"类似idea，文本结构缩略图
-Plug 'preservim/tagbar'
-
-"最近打开的文件
-Plug 'yegappan/mru'
-
-"模糊匹配，查找文件，类似Windows的Everything，速度超快
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-
-"对象增强,例如给一个单词套上引号
-Plug 'tpope/vim-surround'
-
-"vim默认只能重复默认的命令
-"vim-repeat可以重复插件或者自定义的命令，譬如来自vim-surround的命令
-Plug 'tpope/vim-repeat'
-
-Plug 'tpope/vim-unimpaired'
-
-"撤销树
-Plug 'mbbill/undotree'
-
-"异步操作，还能继续做点别的，不阻塞
-Plug 'skywind3000/asyncrun.vim'
-
-"提供uninx的常用命令，它提供的 :Rename 和 :Move 命令，后面跟的参数就是新的名字或路径
-Plug 'tpope/vim-eunuch'
-"主题方案
-Plug 'morhetz/gruvbox'
-Plug 'nanotech/jellybeans.vim'
-Plug 'mbbill/desertEx'
-Plug 'junegunn/seoul256.vim'
-" 类似vscode
-Plug 'kaicataldo/material.vim'
-"很漂亮，偏海洋风
-Plug 'ayu-theme/ayu-vim'
-"类似 sublime
-Plug 'sickill/vim-monokai'
-
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-"调色工具
-Plug 'vim-scripts/SyntaxAttr.vim'
-
-"注释
-Plug 'preservim/nerdcommenter'
-
-Plug 'easymotion/vim-easymotion'
-
-Plug 'mg979/vim-visual-multi'
-
-"TODO-learning
-"Plug 'ap/vim-buftabline'
-"Plug 'fatih/vim-go'
-"Plug 'vrothberg/vgrep'
-"Plug 'mhinz/vim-grepper'
-
-"类似黑客帝国那样的页面，输入:Matrix 就知道了
-Plug 'uguu-org/vim-matrix-screensaver'
-
-Plug 'adah1972/cscope_maps.vim'
-
-Plug 'iamcco/markdown-preview.nvim'
-"python全家桶
-"Plug 'python-mode/python-mode'
-"对括号有多个层次的颜色，对于嵌套很深的括号，很好看
-Plug 'frazrepo/vim-rainbow'
-"对大文件的支持，超过设置的就不适用语法高亮等，加快加载速度，很有用！
-Plug 'vim-scripts/LargeFile'
-"日历
-"Plug 'mattn/calendar-vim'
-"一个游戏
-"Plug 'vim/killersheep'
-
-Plug 'mechatroner/rainbow_csv'
-
-"lsp
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
-
-"tmux
-Plug 'christoomey/vim-tmux-navigator'
-
-Plug 'dhruvasagar/vim-table-mode'
-call plug#end()
-"Vim-Plug end
-
-
-"set guifont=Monaco:h18
-"set guifont=DejaVu Sans Mono for Powerline:h18
-"set guifont=Fira\ Code:h22
-"set guifont=Source\ Code\ Pro:h18
-set guifont=FiraCode\ Nerd\ Font:h18
-"colorscheme desertEx
-
-"colorscheme material
-"let g:material_theme_style = 'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
-"let g:material_theme_style = 'ocean-community' 
-
-"colorscheme seoul256
-"colorscheme seoul256-light
-"set background=light
-
-
-"ayu#mirage偏海洋气息
-"set termguicolors
-"colorscheme ayu
-"let ayucolor="light"  " for light version of theme
-"let ayucolor="mirage" " for mirage version of theme
-"let ayucolor="dark"   " for dark version of theme
-
-colorscheme monokai
-"比较暖色系
-"colorscheme gruvbox
-"比较冷色系
-"colorscheme jellybeans
-"中等，绿色黄色为主
-"colorscheme desertEx
-"colorscheme seoul256
-
-
+"打开当前文件的所在目录，查看同一目录的别的文件有用
+map <leader>8 :e %:h<CR>
+"只留下当前缓存区，删除其他缓存区
+"map <leader>9 :%bd|e\#<CR>
+"对于直接切换到文件所在目录非常有用, 有了:NERDTeeFind和":e %:H"感觉就没什么用了
+"nnoremap <Leader>cd :lcd %:h<CR>
 
 if has('termguicolors') && 
 						\($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
 	set termguicolors
 endif
-
-"快速的不保存就退出，当查看只读文档特别有用，更有效率
-"nnoremap XX :q!<CR>
-
-"按<Esc>手指要伸得过长，所以设置快捷键进行快速操作,要非递归的映射，否则映射不成功 "还是取消了，影响了正常的输入
-"inoremap jk <Esc>
-"cnoremap jk <Esc>
-"vnoremap jk <Esc>
-
-"全选所有内容 
-map <leader>a ggVG
-
-"复制选中的内容到系统粘贴板
-vnoremap <C-C> "+y
-
 "快速的替换当前的内容，使用寄存器0，而不是无名寄存器
 "不能使用无名寄存器，因为被替换的内容也会覆盖无名寄存器
 "nnoremap <Leader>v viw"0p
@@ -216,73 +83,11 @@ vnoremap <C-C> "+y
 "显示行号是个两难，阅读代码时不时需要显示行号，但是在写的时候不想看行号，太污染屏幕
 "nnoremap <leader>1 :set nu<cr>
 "nnoremap <leader>2 :set nonu<cr> "快速在窗口之间跳转
-" 这样反而会打乱我对<C-W>的使用
-"map <C-j> <C-W>j
-"map <C-k> <C-W>k
-"map <C-h> <C-W>h
-"map <C-l> <C-W>l
-
-"C-Tab跟Iterm2的keymap冲突，要记得先删除Iterm2的keymap
-"不需要了，我用得不错
-"nnoremap <C-Tab>   <C-W>w
-"inoremap <C-Tab>   <C-O><C-W>w
-"nnoremap <C-S-Tab> <C-W>W
-"inoremap <C-S-Tab> <C-O><C-W>W
-
-"修改了.vimrc, vim不需要退出就能加载最新的配置
-"对于目前还在学习vim中的我，这个操作尤其频繁
-nnoremap <Leader>5 :source ~/.vimrc<cr>
-
-"nerdtree start
-map <F1> :NERDTreeToggle<cr>
-"当打开某个文件时，就把目录切换到该文件的目录下
-let g:NERDTreeChDirMode = 2
-" 如果最后只剩下nerdtree窗口，则直接关闭
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-"打开目录的这个文件, idea的 always select opened file
-nnoremap <leader>7 :NERDTreeFind<CR>
-"let NERDTreeWinSize=35
-"NERDTree end
-
-"fzf start
-nnoremap <F2> :Files<CR>
-"fzf end
-
-"Tagbar start
-nmap <F3> :TagbarToggle<CR>
-"let g:tagbar_width=40
-"Tagbar end
-
-"undoTree start
-nnoremap <F4> :UndotreeToggle<CR>
-"undoTree end
-
-" 用于 quickfix、标签和文件跳转的键映射
-"nmap <F7>   :cn<CR>
-"nmap <F8>   :cp<CR>
-"nmap <M-F7> :copen<CR>
-"nmap <M-F8> :cclose<CR>
-"nmap <C-F7> :tn<CR>
-"nmap <C-F8> :tp<CR>
-"nmap <S-F7> :n<CR>
-"nmap <S-F8> :prev<CR>
-
-"自动补全
-":inoremap ( ()<ESC>i
-":inoremap ) <c-r>=ClosePair(')')<CR>
-":inoremap { {<CR>}<ESC>O
-":inoremap } <c-r>=ClosePair('}')<CR>
-":inoremap [ []<ESC>i
-":inoremap ] <c-r>=ClosePair(']')<CR>
-":inoremap " ""<ESC>i
-":inoremap ' ''<ESC>i
-
+"
 "设置支持跨会话撤销
 set nobackup
 set undofile
 set undodir=~/.vim/undodir
-
 if !isdirectory(&undodir)
   call mkdir(&undodir, 'p', 0700)
 endif
@@ -308,32 +113,26 @@ if !has('gui_running')
   endif
 endif
 
+set scrolloff=1
+"删除空白行波浪线提示
+:hi NonText guifg=bg
+"发现打开了相同的文件，自动调回之前的文件
+if v:version >= 800
+	packadd! editexisting
+endif
+"调整命令行窗口
+set cmdheight=2
+"去掉乌干达欢迎语
+set shm+=I
+
+"快速扩展当前文件所在的绝对路径
+"cnoremap <expr>%% getcmdtype() == ':' ? expand('%:h').'/':'%%'
+
 " 不需要了，我用得也不多
 "map <Leader>tn :tabnew<cr>
 "map <Leader>to :tabonly<cr>
 "map <Leader>tc :tabclose<cr>
 "map <Leader>tm :tabmove
-
-" ctags start
-set tags=./tags;,tags,/usr/local/etc/systags
-" ctags end
-
-" 参考吴咏炜的配置
-
-" 启用vim自带的 man插件, :Man就可以在vim直接查看man手册
-source $VIMRUNTIME/ftplugin/man.vim
-set keywordprg=:Man
-
-" 异步运行命令时打开 quickfix 窗口，高度为 10 行
-"let g:asyncrun_open = 10
-
-"gitGutter start
-highlight! link SignColumn LineNr
-highlight GitGutterAdd    guifg=#009900 ctermfg=2
-highlight GitGutterChange guifg=#bbbb00 ctermfg=3
-highlight GitGutterDelete guifg=#ff2222 ctermfg=1
-let g:gitgutter_set_sign_backgrounds = 1
-""gitGutter end
 
 "if has('gui_running')
   " 不延迟加载菜单（需要放在下面的 source 语句之前）
@@ -341,44 +140,9 @@ let g:gitgutter_set_sign_backgrounds = 1
   let do_no_lazyload_menus=1
 "endif
 
-"调色工具
-"nnoremap <Leader>a :call SyntaxAttr()<CR>
-
 "如果打开一个窗口多个文件，设置自动保存比较好，idea等自动保存
 "vscode其实也会缓存备份，不会丢失
 nnoremap <Leader>6 :set autowrite<CR>
-
-let g:airline_powerline_fonts = 1 "这个会让我的airline状态栏乱码. 后来发现 guifont要配对应的字体 xxx for powerline
-let g:airline#extensions#tabline#enabled = 1 " 展示顶部的状态栏
-let g:airline#extensions#tabline#buffer_nr_show = 1 " 展示:buffers中的序号，便于通过:buffer number跳转
-let g:airline#extensions#tabline#buffer_idx_mode = 3 " 展示:buffer中的序号,可以通过快捷键快速切换到指定的buffer
-let g:airline#extensions#tabline#overflow_marker = '…' "使用 … 来表示省略（单个字符，而非占据三列的三个点），这样可以节约一点屏幕空间。
-"let g:airline#extensions#tabline#show_tab_nr = 0 "关掉tab的展示
-
-set scrolloff=1
-
-"删除空白行波浪线提示
-:hi NonText guifg=bg
-
-
-"发现打开了相同的文件，自动调回之前的文件
-if v:version >= 800
-	packadd! editexisting
-endif
-
-"调整命令行窗口
-set cmdheight=2
-
-"去掉乌干达欢迎语
-set shm+=I
-
-"快速扩展当前文件所在的绝对路径
-"cnoremap <expr>%% getcmdtype() == ':' ? expand('%:h').'/':'%%'
-
-"vim-rainbow
-au FileType c,cpp,objc,objcpp call rainbow#load()
-
-let g:LargeFile = 100
 
 "au BufNewFile,BufRead *.c			colorscheme ayu |let ayucolor="light" 
 "au BufNewFile,BufRead *.c			let g:material_theme_style = 'lighter' 
@@ -386,98 +150,310 @@ let g:LargeFile = 100
 au FileType c,cpp,objc,objcpp			set expandtab
 au FileType c,cpp,objc,objcpp			set autoindent
 
-"对于阅读西文特别重要，即换行时保持缩进
-set breakindent
+"set guifont=Monaco:h18
+"set guifont=DejaVu Sans Mono for Powerline:h18
+"set guifont=Fira\ Code:h22
+"set guifont=Source\ Code\ Pro:h18
+set guifont=FiraCode\ Nerd\ Font:h18
+"colorscheme desertEx
+"colorscheme material
+"let g:material_theme_style = 'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
+"let g:material_theme_style = 'ocean-community' 
+"colorscheme seoul256
+"colorscheme seoul256-light
+"set background=light
+"ayu#mirage偏海洋气息
+"set termguicolors
+"colorscheme ayu
+"let ayucolor="light"  " for light version of theme
+"let ayucolor="mirage" " for mirage version of theme
+"let ayucolor="dark"   " for dark version of theme
+colorscheme monokai
+"比较暖色系
+"colorscheme gruvbox
+"比较冷色系
+"colorscheme jellybeans
+"中等，绿色黄色为主
+"colorscheme desertEx
+"colorscheme seoul256
+"=====================================Basic Settings END==================================
 
-"对于直接切换到文件所在目录非常有用
-nnoremap <Leader>cd :lcd %:h<CR>
+"Vim-Plug start
+call plug#begin()
+"对git支持
+Plug 'tpope/vim-fugitive'
+"可以达到vscode/idea的效果，实时查看文件内的变动情况，把变动在左边栏显示出来
+Plug 'airblade/vim-gitgutter'
+"目录树
+Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tpope/vim-vinegar'
+"各种语言的自动补全，对c/c++语言支持特别好
+"Plug 'Valloric/YouCompleteMe'
+"类似idea，文本结构缩略图
+Plug 'preservim/tagbar'
+"用于替代tagbar的
+Plug 'Yggdroot/LeaderF'
+"最近打开的文件
+Plug 'yegappan/mru'
+"模糊匹配，查找文件，类似Windows的Everything，速度超快
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+"对象增强,例如给一个单词套上引号
+Plug 'tpope/vim-surround'
+"vim默认只能重复默认的命令
+"vim-repeat可以重复插件或者自定义的命令，譬如来自vim-surround的命令
+Plug 'tpope/vim-repeat'
+"通用的快捷键命令
+Plug 'tpope/vim-unimpaired'
+"撤销树
+Plug 'mbbill/undotree'
+"异步操作，还能继续做点别的，不阻塞
+Plug 'skywind3000/asyncrun.vim'
+"提供uninx的常用命令，它提供的 :Rename 和 :Move 命令，后面跟的参数就是新的名字或路径
+Plug 'tpope/vim-eunuch'
+"主题方案
+"Plug 'morhetz/gruvbox'
+"Plug 'nanotech/jellybeans.vim'
+"Plug 'mbbill/desertEx'
+"Plug 'junegunn/seoul256.vim'
+" 类似vscode
+"Plug 'kaicataldo/material.vim'
+"很漂亮，偏海洋风
+"Plug 'ayu-theme/ayu-vim'
+"类似 sublime
+Plug 'sickill/vim-monokai'
+"状态栏
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+"调色工具
+"Plug 'vim-scripts/SyntaxAttr.vim'
+"注释
+Plug 'preservim/nerdcommenter'
+Plug 'easymotion/vim-easymotion'
+Plug 'mg979/vim-visual-multi'
+"TODO-learning
+"Plug 'ap/vim-buftabline'
+"Plug 'fatih/vim-go'
+"Plug 'vrothberg/vgrep'
+"自来也推荐的
+Plug 'mhinz/vim-grepper'
+"Plug 'uguu-org/vim-matrix-screensaver'
+Plug 'adah1972/cscope_maps.vim'
+"自动更新ctags
+Plug 'ludovicchabant/vim-gutentags' 
+"markdown预览
+Plug 'iamcco/markdown-preview.nvim'
+"python全家桶
+"Plug 'python-mode/python-mode'
+"对括号有多个层次的颜色，对于嵌套很深的括号，很好看
+Plug 'frazrepo/vim-rainbow'
+"对大文件的支持，超过设置的就不适用语法高亮等，加快加载速度，很有用！
+Plug 'vim-scripts/LargeFile'
+"日历
+"Plug 'mattn/calendar-vim'
+"一个游戏
+"Plug 'vim/killersheep'
+"Plug 'mechatroner/rainbow_csv'
+"lsp
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
+"tmux
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'dhruvasagar/vim-table-mode'
+call plug#end()
+"Vim-Plug end
 
+"Airline start
+let g:airline_powerline_fonts = 1 "这个会让我的airline状态栏乱码. 后来发现 guifont要配对应的字体 xxx for powerline
+let g:airline#extensions#tabline#enabled = 1 " 展示顶部的状态栏
+let g:airline#extensions#tabline#buffer_nr_show = 1 " 展示:buffers中的序号，便于通过:buffer number跳转
+let g:airline#extensions#tabline#buffer_idx_mode = 3 " 展示:buffer中的序号,可以通过快捷键快速切换到指定的buffer
+let g:airline#extensions#tabline#overflow_marker = '…' "使用 … 来表示省略（单个字符，而非占据三列的三个点），这样可以节约一点屏幕空间。
+"let g:airline#extensions#tabline#show_tab_nr = 0 "关掉tab的展示
+"Airline end
+
+"Cscope
 "cscope使用quickfix进行快速跳转
 set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
-
 "nnoremap <leader>cs :cs find c =expand('cword')
+"Cscope
 
-"不需要强制保存，就可以切换buffer
-set hidden
+"fzf start
+nnoremap <F2> :Files<CR>
+"fzf end
 
-let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
-let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder namGo
+"Ctags start
+"参考https://www.zhihu.com/question/47691414?utm_id=0
+"set tags=./tags;,tags,/usr/local/etc/systags
+"set tags=./.tags;,.tags
+set tags=./tags;,tags
+"Ctags end
+
+"GitGutter start
+highlight! link SignColumn LineNr
+highlight GitGutterAdd    guifg=#009900 ctermfg=2
+highlight GitGutterChange guifg=#bbbb00 ctermfg=3
+highlight GitGutterDelete guifg=#ff2222 ctermfg=1
+let g:gitgutter_set_sign_backgrounds = 1
+"GitGutter end
+
+"Gutentags start
+"https://www.zhihu.com/question/47691414/answer/373700711
+" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = 'tags'
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+" 配置 ctags 的参数
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extras=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+" 检测 ~/.cache/tags 不存在就新建
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+"Gutentags start
 
 "LSP start
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
-
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gr <plug>(lsp-references)
-    nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
-    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
-
-    let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-    
-    " refer to doc to add more commands
-endfunction
-
-augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
- 
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
-
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-
-"bash
-if executable('bash-language-server')
-  au User lsp_setup call lsp#register_server({
-        \ 'name': 'bash-language-server',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
-        \ 'whitelist': ['sh'],
-        \ })
+"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
 "
-endif
-
-" Register ccls C++ lanuage server.
-if executable('ccls')
-   au User lsp_setup call lsp#register_server({
-      \ 'name': 'ccls',
-      \ 'cmd': {server_info->['ccls']},
-      \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
-      \ 'initialization_options': {'cache': {'directory': expand('~/.cache/ccls') }},
-      \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
-      \ })
-endif
+"function! s:on_lsp_buffer_enabled() abort
+"    setlocal omnifunc=lsp#complete
+"    setlocal signcolumn=yes
+"    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+"    nmap <buffer> gd <plug>(lsp-definition)
+"    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+"    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+"    nmap <buffer> gr <plug>(lsp-references)
+"    nmap <buffer> gi <plug>(lsp-implementation)
+"    nmap <buffer> gt <plug>(lsp-type-definition)
+"    nmap <buffer> <leader>rn <plug>(lsp-rename)
+"    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+"    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+"    nmap <buffer> K <plug>(lsp-hover)
+"    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+"    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+"
+"    let g:lsp_format_sync_timeout = 1000
+"    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+"    
+"    " refer to doc to add more commands
+"endfunction
+"
+"augroup lsp_install
+"    au!
+"    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+"    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+"augroup END
+" 
+"
+"au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+"    \ 'name': 'file',
+"    \ 'whitelist': ['*'],
+"    \ 'priority': 10,
+"    \ 'completor': function('asyncomplete#sources#file#completor')
+"    \ }))
+"
+"if executable('pyls')
+"    au User lsp_setup call lsp#register_server({
+"        \ 'name': 'pyls',
+"        \ 'cmd': {server_info->['pyls']},
+"        \ 'whitelist': ['python'],
+"        \ })
+"endif
+"
+""bash
+"if executable('bash-language-server')
+"  au User lsp_setup call lsp#register_server({
+"        \ 'name': 'bash-language-server',
+"        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
+"        \ 'whitelist': ['sh'],
+"        \ })
+""
+"endif
+"
+"" Register ccls C++ lanuage server.
+"if executable('ccls')
+"   au User lsp_setup call lsp#register_server({
+"      \ 'name': 'ccls',
+"      \ 'cmd': {server_info->['ccls']},
+"      \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+"      \ 'initialization_options': {'cache': {'directory': expand('~/.cache/ccls') }},
+"      \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
+"      \ })
+"endif
 "LSP start
 
 
+"LargeFile start
+"单位为M
+let g:LargeFile = 100
+"LargeFile end 
+
+"Netrw start
+"disable netrw
+"let g:loaded_netrw       = 0
+"let g:loaded_netrwPlugin = 0
+"Netrw end
+
+"NERDTree start
+map <F1> :NERDTreeToggle<cr>
+"当打开某个文件时，就把目录切换到该文件的目录下
+let g:NERDTreeChDirMode = 2
+" 如果最后只剩下nerdtree窗口，则直接关闭
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"打开目录的这个文件, idea的 always select opened file
+nnoremap <leader>7 :NERDTreeFind<CR>
+"打开vim就自动打开nerdtree
+"autocmd vimenter * NERDTree
+"指定NERDTree窗口的大小 
+"let NERDTreeWinSizel
+"NERDTree end
+
+"Man start
+" 参考吴咏炜的配置
+" 启用vim自带的 man插件, :Man就可以在vim直接查看man手册
+"source $VIMRUNTIME/ftplugin/man.vim
+"set keywordprg=:Man
+"Man end
+
+"Rainbow start
+au FileType c,cpp,objc,objcpp call rainbow#load()
+"Rainbow end
+
+"Quickfix start
+map <leader>1 :copen<CR>
+map <leader>2 :cclose<CR>
+" 异步运行命令时打开 quickfix 窗口，高度为 10 行
+"let g:asyncrun_open = 10
+"剩下最后一个quickfix自动关闭
+aug QFClose 
+    au!
+    au WinEnter *  if winnr('$') == 1 && &buftype == "quickfix"|q|endif
+aug END
+"Quickfix end
+
+"SyntaxAttr start
+"调色工具
+"nnoremap <Leader>a :call SyntaxAttr()<CR>
+"SyntaxAttr end
+
+"Tagbar start
+nmap <F3> :TagbarToggle<CR>
+"let g:tagbar_width=40
+"Tagbar end
+
+"Table-mode start
 "Markdown 里的表格撰写
-"vim-table-mode start
 function! s:isAtStartOfLine(mapping)
   let text_before_cursor = getline('.')[0 : col('.')-1]
   let mapping_pattern = '\V' . escape(a:mapping, '\')
@@ -491,43 +467,20 @@ inoreabbrev <expr> <bar><bar>
 inoreabbrev <expr> __
           \ <SID>isAtStartOfLine('__') ?
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
-"vim-table-mode end
+"Table-mode end
 
-"map <leader>8 :e %:h<CR>
-
-
+"Visual start
 "对visual选中内容可以直接搜索
 xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
 xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
-
 function! s:VSetSearch(cmdtype)
   let temp = @s
   norm! gv"sy
   let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
   let @s = temp
 endfunction
+"Visual end
 
-"只留下当前缓存区，删除其他缓存区
-"map <leader>9 :%bd|e\#<CR>
-
-"quickfix
-map <leader>1 :copen<CR>
-map <leader>2 :cclose<CR>
-
-
-"打开就最大化gvim窗口
-"if has('win32')
-"	au GUIEnter * simalt ~x
-"else
-"	au GUIEnter * call MaximizeWindow()
-"endif
-"
-"function! MaximizeWindow()
-"	silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
-"endfunction
-
-
-"剩下quickfix自动关闭
-aug QFClose 
-    au!  au WinEnter *  if winnr('$') == 1 && &buftype == "quickfix"|q|endif
-aug END
+"UndoTree start
+nnoremap <F4> :UndotreeToggle<CR>
+"UndoTree end
