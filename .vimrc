@@ -162,7 +162,8 @@ Plug 'tpope/vim-fugitive'
 "可以达到vscode/idea的效果，实时查看文件内的变动情况，把变动在左边栏显示出来
 Plug 'airblade/vim-gitgutter'
 "目录树
-Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
+"Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-vinegar'
@@ -246,13 +247,22 @@ call plug#end()
 "Vim-Plug END
 
 "Airline START
-let g:airline_powerline_fonts = 1 "这个会让我的airline状态栏乱码. 后来发现 guifont要配对应的字体 xxx for powerline
-let g:airline#extensions#tabline#enabled = 1 " 展示顶部的状态栏
-let g:airline#extensions#tabline#buffer_nr_show = 1 " 展示:buffers中的序号，便于通过:buffer number跳转
+"这个会让我的airline状态栏乱码. 后来发现 guifont要配对应的字体 xxx for "powerline
+let g:airline_powerline_fonts = 1 
+" 展示顶部的状态栏
+let g:airline#extensions#tabline#enabled = 1 
+" 展示:buffers中的序号，便于通过:buffer number跳转
+let g:airline#extensions#tabline#buffer_nr_show = 1 
+"文件只暂时简单的文件名，去掉目录路径
 let g:airline#extensions#tabline#formatter = 'unique_tail'
-"let g:airline#extensions#tabline#buffer_idx_mode = 3 " 展示:buffer中的序号,可以通过快捷键快速切换到指定的buffer
-"let g:airline#extensions#tabline#overflow_marker = '…' "使用 … 来表示省略（单个字符，而非占据三列的三个点），这样可以节约一点屏幕空间。
-"let g:airline#extensions#tabline#show_tab_nr = 0 "关掉tab的展示
+"let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+"三言两语说不清楚，看帮助文档
+"let g:airline#extensions#tabline#buffer_idx_mode = 1
+"使用 … 来表示省略（单个字符，而非占据三列的三个点），这样可以节约一点屏幕空间。
+"let g:airline#extensions#tabline#overflow_marker = '…' 
+"关掉tab的展示
+"let g:airline#extensions#tabline#show_tab_nr = 0 
 "Airline END
 
 "Cscope
@@ -430,6 +440,7 @@ let g:NERDTreeMouseMode=3
 "默认显示隐藏的文件，以.开头的文件
 let g:NERDTreeShowHidden=1
 " 如果最后只剩下nerdtree窗口，则直接关闭
+let NERDTreeShowLineNumbers=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "打开目录的这个文件, idea的 always select opened file
 nnoremap <leader>7 :NERDTreeFind<CR>
