@@ -171,7 +171,7 @@ Plug 'tpope/vim-vinegar'
 "类似idea，文本结构缩略图
 Plug 'preservim/tagbar'
 "用于替代tagbar的
-Plug 'Yggdroot/LeaderF'
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 "最近打开的文件
 Plug 'yegappan/mru'
 "模糊匹配，查找文件，类似Windows的Everything，速度超快
@@ -249,8 +249,9 @@ call plug#end()
 let g:airline_powerline_fonts = 1 "这个会让我的airline状态栏乱码. 后来发现 guifont要配对应的字体 xxx for powerline
 let g:airline#extensions#tabline#enabled = 1 " 展示顶部的状态栏
 let g:airline#extensions#tabline#buffer_nr_show = 1 " 展示:buffers中的序号，便于通过:buffer number跳转
-let g:airline#extensions#tabline#buffer_idx_mode = 3 " 展示:buffer中的序号,可以通过快捷键快速切换到指定的buffer
-let g:airline#extensions#tabline#overflow_marker = '…' "使用 … 来表示省略（单个字符，而非占据三列的三个点），这样可以节约一点屏幕空间。
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+"let g:airline#extensions#tabline#buffer_idx_mode = 3 " 展示:buffer中的序号,可以通过快捷键快速切换到指定的buffer
+"let g:airline#extensions#tabline#overflow_marker = '…' "使用 … 来表示省略（单个字符，而非占据三列的三个点），这样可以节约一点屏幕空间。
 "let g:airline#extensions#tabline#show_tab_nr = 0 "关掉tab的展示
 "Airline END
 
@@ -414,14 +415,20 @@ let g:LargeFile = 100
 
 "Netrw START
 "disable netrw
-"let g:loaded_netrw       = 0
-"let g:loaded_netrwPlugin = 0
+let g:loaded_netrw       = 0
+let g:loaded_netrwPlugin = 0
 "Netrw END
 
 "NERDTree START
 map <F1> :NERDTreeToggle<cr>
 "当打开某个文件时，就把目录切换到该文件的目录下
 let g:NERDTreeChDirMode = 2
+"替代vim内置的netrw， vim . 目录时默认用NERDTree
+let g:NERDTreeHijackNetrw = 1
+"设置鼠标点击目录和文件的方式，3为单机就打开目录和文件
+let g:NERDTreeMouseMode=3
+"默认显示隐藏的文件，以.开头的文件
+let g:NERDTreeShowHidden=1
 " 如果最后只剩下nerdtree窗口，则直接关闭
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "打开目录的这个文件, idea的 always select opened file
