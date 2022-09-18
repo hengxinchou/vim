@@ -1,5 +1,10 @@
-
-"=====================================Basic Settings START==================================
+"https://github.com/tpope/vim-rhubarb>.=====================================Basic Settings START==================================
+if has('gui_running')
+  " 不延迟加载菜单（需要放在下面的 source 语句之前）
+  let do_syntax_sel_menu=1
+  let do_no_lazyload_menus=1
+endif
+so $VIMRUNTIME/vimrc_example.vim
 syntax on
 set nocompatible
 set lbr
@@ -11,8 +16,7 @@ set history=1000
 set breakindent
 
 "tab START
-"设定 tab 长度为 4
-set tabstop=4 
+"设定 tab 长度为 4 set tabstop=4 
 "set ts=4 跟tabstop同理
 "表示在编辑模式的时候按退格键的时候退回缩进的长度，当使用 expandtab 时特别有用
 set softtabstop=4 
@@ -43,7 +47,7 @@ set nowrapscan
 "递进搜索, 输入搜索内容时就显示搜索结果
 "set incsearch 
 "不需要强制保存，就可以切换buffer
-set hidden
+"set hidden
 
 "打开就最大化gvim窗口
 "if has('win32')
@@ -96,13 +100,14 @@ if !isdirectory(&undodir)
 endif
 
 "如果支持鼠标，就开始鼠标支持，并且在不同的系统开启不同的设置
-if has('mouse')
-  if has('gui_running') || (&term =~ 'xterm' && !has('mac'))
-    set mouse=a
-  else
-    set mouse=nvi
-  endif
-endif
+"if has('mouse')
+"  if has('gui_running') || (&term =~ 'xterm' && !has('mac'))
+"    set mouse=a
+"  else
+"    set mouse=nvi
+"  endif
+"endif
+set mouse=a
 
 "设置最近打开的文件的快捷键
 if !has('gui_running')
@@ -137,15 +142,10 @@ set shm+=I
 "map <Leader>tc :tabclose<cr>
 "map <Leader>tm :tabmove
 
-"if has('gui_running')
-  " 不延迟加载菜单（需要放在下面的 source 语句之前）
-  let do_syntax_sel_menu=1
-  let do_no_lazyload_menus=1
-"endif
 
 "如果打开一个窗口多个文件，设置自动保存比较好，idea等自动保存
 "vscode其实也会缓存备份，不会丢失
-nnoremap <Leader>6 :set autowrite<CR>
+"nnoremap <Leader>6 :set autowrite<CR>
 
 "au BufNewFile,BufRead *.c			colorscheme ayu |let ayucolor="light" 
 "au BufNewFile,BufRead *.c			let g:material_theme_style = 'lighter' 
@@ -159,6 +159,7 @@ au FileType c,cpp,objc,objcpp			set autoindent
 call plug#begin()
 "对git支持
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 "可以达到vscode/idea的效果，实时查看文件内的变动情况，把变动在左边栏显示出来
 Plug 'airblade/vim-gitgutter'
 "目录树
@@ -168,7 +169,8 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-vinegar'
 "各种语言的自动补全，对c/c++语言支持特别好
-"Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
+Plug 'lyuts/vim-rtags'
 "类似idea，文本结构缩略图
 Plug 'preservim/tagbar'
 "用于替代tagbar的
@@ -209,7 +211,7 @@ Plug 'vim-airline/vim-airline-themes'
 "Plug 'vim-scripts/SyntaxAttr.vim'
 "注释
 Plug 'preservim/nerdcommenter'
-Plug 'easymotion/vim-easymotion'
+"Plug 'easymotion/vim-easymotion'
 Plug 'mg979/vim-visual-multi'
 "TODO-learning
 "Plug 'ap/vim-buftabline'
@@ -252,13 +254,18 @@ let g:airline_powerline_fonts = 1
 " 展示顶部的状态栏
 let g:airline#extensions#tabline#enabled = 1 
 " 展示:buffers中的序号，便于通过:buffer number跳转
-let g:airline#extensions#tabline#buffer_nr_show = 1 
+"let g:airline#extensions#tabline#buffer_nr_show = 1 
 "文件只暂时简单的文件名，去掉目录路径
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 "let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 "三言两语说不清楚，看帮助文档
-"let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+"可能我自己定义了leader,
+""所以上面的g:airline#extensions#tabline#buffer_idx_mode不生效,要手动映射
+for i in range(1, 9)
+  exe printf('nmap <silent> <Space>%d <Plug>AirlineSelectTab%d', i, i)
+endfor
 "使用 … 来表示省略（单个字符，而非占据三列的三个点），这样可以节约一点屏幕空间。
 "let g:airline#extensions#tabline#overflow_marker = '…' 
 "关掉tab的展示
@@ -270,6 +277,18 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 "nnoremap <leader>cs :cs find c =expand('cword')
 "Cscope
+
+"Ctags START
+"参考https://www.zhihu.com/question/47691414?utm_id=0
+"set tags=./tags;,tags,/usr/local/etc/systags
+"set tags=./.tags;,.tags
+set tags=./tags;,tags
+"Ctags END
+
+"Fzf START
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
+nnoremap <F2> :Files<CR>
+"Fzf END
 
 "Font and colorschema START
 "set guifont=Monaco:h18
@@ -300,16 +319,9 @@ colorscheme monokai
 "colorscheme seoul256
 "Font and colorschema END
 
-"fzf START
-nnoremap <F2> :Files<CR>
-"fzf END
-
-"Ctags START
-"参考https://www.zhihu.com/question/47691414?utm_id=0
-"set tags=./tags;,tags,/usr/local/etc/systags
-"set tags=./.tags;,.tags
-set tags=./tags;,tags
-"Ctags END
+"Git-Fugitive/vim-rhubarb START
+let g:github_enterprise_urls = ['https://www.github.com']
+"Git-Fugitive/vim-rhubarb END
 
 "GitGutter START
 highlight! link SignColumn LineNr
@@ -317,6 +329,8 @@ highlight GitGutterAdd    guifg=#009900 ctermfg=2
 highlight GitGutterChange guifg=#bbbb00 ctermfg=3
 highlight GitGutterDelete guifg=#ff2222 ctermfg=1
 let g:gitgutter_set_sign_backgrounds = 1
+"默认是4000,单位是ms，改快一些。
+set updatetime=100
 "GitGutter END
 
 "Gutentags START
@@ -422,7 +436,6 @@ let g:LargeFile = 100
 "set keywordprg=:Man
 "Man END
 
-
 "Netrw START
 "disable netrw
 let g:loaded_netrw       = 0
@@ -444,8 +457,19 @@ let NERDTreeShowLineNumbers=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "打开目录的这个文件, idea的 always select opened file
 nnoremap <leader>7 :NERDTreeFind<CR>
+" Start NERDTree when Vim is started without file arguments.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+"Start NERDTree when Vim starts with a directory argument.
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+"    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+" Start NERDTree and put the cursor back in the other window.
+"autocmd VimEnter * NERDTree | wincmd p
 "打开vim就自动打开nerdtree
 "autocmd vimenter * NERDTree
+"指定打开和折叠目录的提示符
+"let NERDTreeDirArrowExpandable=">"
+"let NERDTreeDirArrowCollapsible="v"
 "指定NERDTree窗口的大小 
 "let NERDTreeWinSizel
 "NERDTree END
@@ -465,6 +489,12 @@ aug QFClose
     au WinEnter *  if winnr('$') == 1 && &buftype == "quickfix"|q|endif
 aug END
 "Quickfix END
+
+"Rtags START
+"通常rtags配合YouCompleteMe使用
+"使用快速修复窗口而不是默认使用的位置列表（location list）
+let g:rtagsUseLocationList = 0
+"Rtags END
 
 "SyntaxAttr START
 "调色工具
@@ -508,3 +538,31 @@ endfunction
 "UndoTree START
 nnoremap <F4> :UndotreeToggle<CR>
 "UndoTree END
+
+"YouCompleteMe START
+nnoremap <Leader>fi :YcmCompleter FixIt<CR>
+nnoremap <Leader>gt :YcmCompleter GoTo<CR>
+nnoremap <Leader>gd :YcmCompleter GoToDefinition<CR>
+nnoremap <Leader>gh :YcmCompleter GoToDeclaration<CR>
+nnoremap <Leader>gr :YcmCompleter GoToReferences<CR>
+"关掉光标悬停的提示
+"let g:ycm_auto_hover = ''
+"写注释的时候也能启用自动完成
+let g:ycm_complete_in_comments = 1
+"仅对白名单列表里的文件类型才启用 YCM
+let g:ycm_filetype_whitelist = {
+      \ 'c': 1,
+      \ 'cpp': 1,
+      \ 'python': 1,
+      \ 'vim': 1,
+      \ 'sh': 1,
+      \ 'zsh': 1,
+      \ }
+"当跳转的目的文件尚未打开时，用分割窗口的方式打开新文件；如果已经打开则跳转到相应的窗口
+let g:ycm_goto_buffer_command = 'split-or-existing-window'
+"来定义手工启用语义完成的按键。在你输入时，YCM
+"会自动尝试标识符匹配，而当你输入 .、->、:: 或这个按键时，YCM
+"则会启用语义完成，来给出当前上下文中允许出现的符号。这个按键默认是
+"，在某些操作系统上是不能用的（如 Mac 和老的 Windows），所以我改成了
+let g:ycm_key_invoke_completion = '<C-Z>'
+"YouCompleteMe END
