@@ -1,4 +1,4 @@
-"https://github.com/tpope/vim-rhubarb>.=====================================Basic Settings START==================================
+"khttps://github.com/tpope/vim-rhubarb>.=====================================Basic Settings START==================================
 if has('gui_running')
   " 不延迟加载菜单（需要放在下面的 source 语句之前）
   let do_syntax_sel_menu=1
@@ -159,7 +159,8 @@ au FileType c,cpp,objc,objcpp			set autoindent
 call plug#begin()
 "对git支持
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
+"GBrowse的支持
+"Plug 'tpope/vim-rhubarb'
 "可以达到vscode/idea的效果，实时查看文件内的变动情况，把变动在左边栏显示出来
 Plug 'airblade/vim-gitgutter'
 "目录树
