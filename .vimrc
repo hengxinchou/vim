@@ -1,4 +1,4 @@
-"khttps://github.com/tpope/vim-rhubarb>.=====================================Basic Settings START==================================
+"=====================================Basic Settings START==================================
 if has('gui_running')
   " 不延迟加载菜单（需要放在下面的 source 语句之前）
   let do_syntax_sel_menu=1
@@ -33,8 +33,8 @@ set autoindent
 "设置在状态行显示的信息
 "当有大写就区分大小写，没有大写字母就不区分大小写
 "要想实现这种功能，必须先设置 ignorecase，再接着设置 smartcase 变量
-:set ignorecase
-:set smartcase
+set ignorecase
+set smartcase
 " 搜索时高亮显示被找到的文本
 set hlsearch 
 "关闭搜索时高亮
@@ -171,6 +171,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-vinegar'
 "各种语言的自动补全，对c/c++语言支持特别好
 Plug 'Valloric/YouCompleteMe'
+"如果没有安装clangd的YCM，则可以用rtags进行查找引用，比较快
 Plug 'lyuts/vim-rtags'
 "类似idea，文本结构缩略图
 Plug 'preservim/tagbar'
@@ -224,6 +225,8 @@ Plug 'mhinz/vim-grepper'
 Plug 'adah1972/cscope_maps.vim'
 "自动更新ctags
 Plug 'ludovicchabant/vim-gutentags' 
+"输入C语言函数名加 ( 时，Vim 就会在屏幕底部自动提示函数的原型
+Plug 'mbbill/echofunc' 
 "markdown预览
 Plug 'iamcco/markdown-preview.nvim'
 "python全家桶
@@ -273,11 +276,38 @@ endfor
 "let g:airline#extensions#tabline#show_tab_nr = 0 
 "Airline END
 
+"C programming START
+"对C语言的优化
+"用来标记空格错误，包括了 tab 字符前的空格和行尾空格，这样设置之后 Vim 会把这样的空格加亮出来。
+let g:c_space_errors = 1
+"激活 GNU 扩展，这在 Unix 下一般是必要的
+let g:c_gnu = 1
+"不对 printf 或类似函数里的的格式化字串进行加亮。这条可能看个人需要了。我是对错误的加亮超级反感，所以关闭这种不分场合的加亮。
+let g:c_no_cformat = 1
+"为了让一些 GNU 的扩展能够正确显示，不会被标志成错误。
+let g:c_no_curly_error = 1
+"Vim 默认会在注释中加亮字符串和数字（c_comment_strings）。虽然这种加亮有时候也能派上用场，但这种配置下我常常在注释中见到错误的加亮，所以我还是关闭这个功能。
+if exists('g:c_comment_strings')
+  unlet g:c_comment_strings
+endif
+"其他 :help ft-c-syntax
+"C programming START
+
 "Cscope
 "cscope使用quickfix进行快速跳转
-set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
+"set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 "nnoremap <leader>cs :cs find c =expand('cword')
 "Cscope
+
+"ClangComplete START
+"C语言的自动补全, 有YCM感觉没有必要了
+"let g:clang_library_path = '/opt/homebrew/opt/llvm/lib/libclang.dylib'
+"ClangComplete END
+
+"Clang-Format START
+"C语言的自动格式化代码, 有YCM感觉没有必要了
+"noremap <silent> <Tab> :pyxf /opt/homebrew/opt/llvm/lib/clang-format.py<CR>
+"Clang-Format END
 
 "Ctags START
 "参考https://www.zhihu.com/question/47691414?utm_id=0
@@ -473,6 +503,9 @@ autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 "let NERDTreeDirArrowCollapsible="v"
 "指定NERDTree窗口的大小 
 "let NERDTreeWinSizel
+"centos 7.6的字符有问题，所以用这个替换
+"let NERDTreeDirArrowExpandable=">"
+"let NERDTreeDirArrowCollapsible="v"
 "NERDTree END
 
 "Rainbow START
@@ -547,7 +580,7 @@ nnoremap <Leader>gd :YcmCompleter GoToDefinition<CR>
 nnoremap <Leader>gh :YcmCompleter GoToDeclaration<CR>
 nnoremap <Leader>gr :YcmCompleter GoToReferences<CR>
 "关掉光标悬停的提示
-"let g:ycm_auto_hover = ''
+let g:ycm_auto_hover = ''
 "写注释的时候也能启用自动完成
 let g:ycm_complete_in_comments = 1
 "仅对白名单列表里的文件类型才启用 YCM
