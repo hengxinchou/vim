@@ -197,7 +197,7 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'tpope/vim-eunuch'
 "主题方案
 "Plug 'morhetz/gruvbox'
-"Plug 'nanotech/jellybeans.vim'
+Plug 'nanotech/jellybeans.vim'
 "Plug 'mbbill/desertEx'
 "Plug 'junegunn/seoul256.vim'
 " 类似vscode
@@ -210,7 +210,7 @@ Plug 'sickill/vim-monokai'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "调色工具
-"Plug 'vim-scripts/SyntaxAttr.vim'
+Plug 'vim-scripts/SyntaxAttr.vim'
 "注释
 Plug 'preservim/nerdcommenter'
 "Plug 'easymotion/vim-easymotion'
@@ -249,6 +249,8 @@ Plug 'prabirshrestha/asyncomplete-file.vim'
 "tmux
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'dhruvasagar/vim-table-mode'
+"log highlighting 日志高亮
+Plug 'MTDL9/vim-log-highlighting'
 call plug#end()
 "Vim-Plug END
 
@@ -340,11 +342,12 @@ set guifont=FiraCode\ Nerd\ Font:h18
 "let ayucolor="light"  " for light version of theme
 "let ayucolor="mirage" " for mirage version of theme
 "let ayucolor="dark"   " for dark version of theme
-colorscheme monokai
+"colorscheme monokai
 "比较暖色系
 "colorscheme gruvbox
+"let g:gruvbox_termcolors=16
 "比较冷色系
-"colorscheme jellybeans
+colorscheme jellybeans
 "中等，绿色黄色为主
 "colorscheme desertEx
 "colorscheme seoul256
@@ -363,6 +366,25 @@ let g:gitgutter_set_sign_backgrounds = 1
 "默认是4000,单位是ms，改快一些。
 set updatetime=100
 "GitGutter END
+
+"vim-Grep START
+"自来也的推荐的映射
+if exists(':GrepperRg')
+	" 这种方式没法直接使用rg的命令行参数 但可以实现
+	" -dir          指定文件或目录 cwd | file | filecwd | repo `h:g:grepper.dir`
+	" -buffer       只搜索当前文件
+	" -buffers      所有打开的文件
+	vnoremap <F5> <Esc>:<C-u>Grepper -dir cwd -tool rg -noprompt -query '\b<C-r>=GetVisual('rg')<CR>\b'  <C-h>
+	vnoremap <F6> <Esc>:<C-u>Grepper-buffers -dir cwd -tool rg -noprompt -query '\b<C-r>=GetVisual('rg')<CR>\b'  <C-h>
+	nnoremap <expr> <F5> ":<C-u>Grepper -dir cwd -tool rg -noprompt -query '\\b" . expand('<cword>') . "\\b' "
+	nnoremap <expr> <F6> ":<C-u>Grepper-buffers -dir cwd -tool rg -noprompt -query '\\b" . expand('<cword>') . "\\b' "
+elseif exists(':GrepperGrep')
+	vnoremap <F5> <Esc>:<C-u>Grepper -dir cwd -tool grep -noprompt -query '\<<C-r>=GetVisual('grep')<CR>\>'  <C-h>
+	vnoremap <F6> <Esc>:<C-u>Grepper-buffers -dir cwd -tool grep -noprompt -query '\<<C-r>=GetVisual('grep')<CR>\>'  <C-h>
+	nnoremap <expr> <F5> ":<C-u>Grepper -dir cwd -tool grep -noprompt -query '\\<" . expand('<cword>') . "\\>' "
+	nnoremap <expr> <F6> ":<C-u>Grepper-buffers -dir cwd -tool grep -noprompt -query '\\<" . expand('<cword>') . "\\>' "
+    endif
+"vim-Grep END
 
 "Gutentags START
 "https://www.zhihu.com/question/47691414/answer/373700711
@@ -455,6 +477,9 @@ endif
 "endif
 "LSP START
 
+"Leaderf START
+nnoremap <Leader>lf :Leaderf --popup function<CR>
+"Leaderf END
 "LargeFile START
 "单位为M
 let g:LargeFile = 100
@@ -481,16 +506,17 @@ let g:NERDTreeChDirMode = 2
 let g:NERDTreeHijackNetrw = 1
 "设置鼠标点击目录和文件的方式，3为单机就打开目录和文件
 let g:NERDTreeMouseMode=3
-"默认显示隐藏的文件，以.开头的文件
-let g:NERDTreeShowHidden=1
+"默认显示隐藏的文件，以.开头的文件,
+"其实直接大写I切换要不要隐藏文件，也挺方便的
+"let g:NERDTreeShowHidden=1
 " 如果最后只剩下nerdtree窗口，则直接关闭
 let NERDTreeShowLineNumbers=1
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "打开目录的这个文件, idea的 always select opened file
 nnoremap <leader>7 :NERDTreeFind<CR>
 " Start NERDTree when Vim is started without file arguments.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 "Start NERDTree when Vim starts with a directory argument.
 "autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
 "    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
@@ -532,7 +558,7 @@ let g:rtagsUseLocationList = 0
 
 "SyntaxAttr START
 "调色工具
-"nnoremap <Leader>a :call SyntaxAttr()<CR>
+nnoremap <Leader>sa :call SyntaxAttr()<CR>
 "SyntaxAttr END
 
 "Tagbar START
