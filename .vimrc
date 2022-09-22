@@ -62,8 +62,9 @@ set nowrapscan
 
 "全选所有内容 
 map <leader>a ggVG
-"复制选中的内容到系统粘贴板
+"复制选中的内容到系统粘贴板,windows 用<C-C>， mac 用<M-C>
 vnoremap <C-C> "+y
+"vnoremap <M-C> "+y
 "快速的不保存就退出，当查看只读文档特别有用，更有效率
 "nnoremap XX :q!<CR>
 "修改了.vimrc, vim不需要退出就能加载最新的配置 \
@@ -151,7 +152,30 @@ set shm+=I
 "au BufNewFile,BufRead *.c			let g:material_theme_style = 'lighter' 
 "au FileType c,cpp,objc,objcpp			let g:material_theme_style = 'lighter' 
 au FileType c,cpp,objc,objcpp			set expandtab
+"c、cpp、java等都自动显示行号
+au FileType c,cpp,objc,objcpp			set nu
 au FileType c,cpp,objc,objcpp			set autoindent
+
+au FileType java			set nu
+au FileType sh			set nu
+
+"如何让vim退出「插入模式」的时候自动切换为英文输入法？ - 知乎用户WEBOMp的回答 - 知乎
+"https://www.zhihu.com/question/341748857/answer/1739052604
+autocmd InsertLeave * :silent !fcitx-remote -c
+"autocmd BufCreate *  :silent !fcitx-remote -c
+"autocmd BufEnter *  :silent !fcitx-remote -c
+"autocmd BufLeave *  :silent !fcitx-remote -c
+
+"打开文件自动回到上次的退出的行，不用每次都按`"。
+"au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+"if has("autocmd")
+    "autocmd BufRead *.txt set tw=78
+    "autocmd BufReadPost *
+    "\ if line("'\"") > 0 && line ("'\"") <= line("$") |
+    "\   exe "normal g'\"" |
+    "\ endif
+"endif
+"autocmd BufReadPost * normal! g`"zv 
 
 "=====================================Basic Settings END==================================
 
@@ -163,12 +187,14 @@ Plug 'tpope/vim-fugitive'
 "Plug 'tpope/vim-rhubarb'
 "可以达到vscode/idea的效果，实时查看文件内的变动情况，把变动在左边栏显示出来
 Plug 'airblade/vim-gitgutter'
+"类似vim-GitGutter的
+"Plug 'mhinz/vim-signify'
 "目录树
 "Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
-Plug 'tpope/vim-vinegar'
+"Plug 'tpope/vim-vinegar'
 "各种语言的自动补全，对c/c++语言支持特别好
 Plug 'Valloric/YouCompleteMe'
 "如果没有安装clangd的YCM，则可以用rtags进行查找引用，比较快
@@ -177,6 +203,13 @@ Plug 'lyuts/vim-rtags'
 Plug 'preservim/tagbar'
 "用于替代tagbar的
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+"LSP 类似vscode的强大自动补全功能, conquer of complete 
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"韦一笑的quickfix预览功能，不用每次都打开文件或者buffer
+"已经不维护了,用下马的vim-quickui替代
+"Plug 'skywind3000/vim-preview'
+"Plug 'skywind3000/vim-quickui'
+
 "最近打开的文件
 Plug 'yegappan/mru'
 "模糊匹配，查找文件，类似Windows的Everything，速度超快
@@ -192,18 +225,18 @@ Plug 'tpope/vim-unimpaired'
 "撤销树
 Plug 'mbbill/undotree'
 "异步操作，还能继续做点别的，不阻塞
-Plug 'skywind3000/asyncrun.vim'
+"Plug 'skywind3000/asyncrun.vim'
 "提供uninx的常用命令，它提供的 :Rename 和 :Move 命令，后面跟的参数就是新的名字或路径
 Plug 'tpope/vim-eunuch'
 "主题方案
 "Plug 'morhetz/gruvbox'
 Plug 'nanotech/jellybeans.vim'
-"Plug 'mbbill/desertEx'
-"Plug 'junegunn/seoul256.vim'
+Plug 'mbbill/desertEx'
+Plug 'junegunn/seoul256.vim'
 " 类似vscode
-"Plug 'kaicataldo/material.vim'
+Plug 'kaicataldo/material.vim'
 "很漂亮，偏海洋风
-"Plug 'ayu-theme/ayu-vim'
+Plug 'ayu-theme/ayu-vim'
 "类似 sublime
 Plug 'sickill/vim-monokai'
 "状态栏
@@ -213,6 +246,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-scripts/SyntaxAttr.vim'
 "注释
 Plug 'preservim/nerdcommenter'
+"类似 nerdcommenter 
+"Plug 'tpope/vim-commentary'
+"可以跨行去find或者till的移动
+Plug 'justinmk/vim-sneak'
 "Plug 'easymotion/vim-easymotion'
 Plug 'mg979/vim-visual-multi'
 "TODO-learning
@@ -221,8 +258,11 @@ Plug 'mg979/vim-visual-multi'
 "Plug 'vrothberg/vgrep'
 "自来也推荐的
 Plug 'mhinz/vim-grepper'
+"有助于提高切换中文输入法的速度
+"Plug 'xcodebuild/fcitx-vim-osx'
 "Plug 'uguu-org/vim-matrix-screensaver'
-Plug 'adah1972/cscope_maps.vim'
+"Plug 'CodeFalling/fcitx-vim-osx'
+"Plug 'lipingcoding/autoim.vim'
 "自动更新ctags
 Plug 'ludovicchabant/vim-gutentags' 
 "输入C语言函数名加 ( 时，Vim 就会在屏幕底部自动提示函数的原型
@@ -241,11 +281,11 @@ Plug 'vim-scripts/LargeFile'
 "Plug 'vim/killersheep'
 "Plug 'mechatroner/rainbow_csv'
 "lsp
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"Plug 'prabirshrestha/asyncomplete-file.vim'
 "tmux
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'dhruvasagar/vim-table-mode'
@@ -267,6 +307,18 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#tabline#left_alt_sep = '|'
 "三言两语说不清楚，看帮助文档
 let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffer_idx_format = {
+        \ '0': '0',
+        \ '1': '1',
+        \ '2': '2',
+        \ '3': '3',
+        \ '4': '4',
+        \ '5': '5',
+        \ '6': '6',
+        \ '7': '7',
+        \ '8': '8',
+        \ '9': '9'
+        \}
 "可能我自己定义了leader,
 ""所以上面的g:airline#extensions#tabline#buffer_idx_mode不生效,要手动映射
 for i in range(1, 9)
@@ -318,6 +370,11 @@ endif
 set tags=./tags;,tags
 "Ctags END
 
+"devicons START
+"去掉airline#tabline的icon，太占地方
+let g:webdevicons_enable_airline_tabline = 0
+"devicons END
+
 "Fzf START
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
 nnoremap <F2> :Files<CR>
@@ -338,7 +395,7 @@ set guifont=FiraCode\ Nerd\ Font:h18
 "set background=light
 "ayu#mirage偏海洋气息
 "set termguicolors
-"colorscheme ayu
+colorscheme ayu
 "let ayucolor="light"  " for light version of theme
 "let ayucolor="mirage" " for mirage version of theme
 "let ayucolor="dark"   " for dark version of theme
@@ -347,7 +404,8 @@ set guifont=FiraCode\ Nerd\ Font:h18
 "colorscheme gruvbox
 "let g:gruvbox_termcolors=16
 "比较冷色系
-colorscheme jellybeans
+"colorscheme jellybeans
+"let g:jellybeans_use_lowcolor_black=0
 "中等，绿色黄色为主
 "colorscheme desertEx
 "colorscheme seoul256
@@ -368,27 +426,31 @@ set updatetime=100
 "GitGutter END
 
 "vim-Grep START
+"normal或者visual下，直接搜索！！这就是我想要的功能！！
+nmap gs  <plug>(GrepperOperator)
+xmap gs  <plug>(GrepperOperator)
 "自来也的推荐的映射
-if exists(':GrepperRg')
-	" 这种方式没法直接使用rg的命令行参数 但可以实现
-	" -dir          指定文件或目录 cwd | file | filecwd | repo `h:g:grepper.dir`
-	" -buffer       只搜索当前文件
-	" -buffers      所有打开的文件
-	vnoremap <F5> <Esc>:<C-u>Grepper -dir cwd -tool rg -noprompt -query '\b<C-r>=GetVisual('rg')<CR>\b'  <C-h>
-	vnoremap <F6> <Esc>:<C-u>Grepper-buffers -dir cwd -tool rg -noprompt -query '\b<C-r>=GetVisual('rg')<CR>\b'  <C-h>
-	nnoremap <expr> <F5> ":<C-u>Grepper -dir cwd -tool rg -noprompt -query '\\b" . expand('<cword>') . "\\b' "
-	nnoremap <expr> <F6> ":<C-u>Grepper-buffers -dir cwd -tool rg -noprompt -query '\\b" . expand('<cword>') . "\\b' "
-elseif exists(':GrepperGrep')
-	vnoremap <F5> <Esc>:<C-u>Grepper -dir cwd -tool grep -noprompt -query '\<<C-r>=GetVisual('grep')<CR>\>'  <C-h>
-	vnoremap <F6> <Esc>:<C-u>Grepper-buffers -dir cwd -tool grep -noprompt -query '\<<C-r>=GetVisual('grep')<CR>\>'  <C-h>
-	nnoremap <expr> <F5> ":<C-u>Grepper -dir cwd -tool grep -noprompt -query '\\<" . expand('<cword>') . "\\>' "
-	nnoremap <expr> <F6> ":<C-u>Grepper-buffers -dir cwd -tool grep -noprompt -query '\\<" . expand('<cword>') . "\\>' "
-    endif
+"if exists(':GrepperRg')
+"        " 这种方式没法直接使用rg的命令行参数 但可以实现
+"        " -dir          指定文件或目录 cwd | file | filecwd | repo `h:g:grepper.dir`
+"        " -buffer       只搜索当前文件
+"        " -buffers      所有打开的文件
+"        vnoremap <F5> <Esc>:<C-u>Grepper -dir cwd -tool rg -noprompt -query '\b<C-r>=GetVisual('rg')<CR>\b'  <C-h>
+"        vnoremap <F6> <Esc>:<C-u>Grepper-buffers -dir cwd -tool rg -noprompt -query '\b<C-r>=GetVisual('rg')<CR>\b'  <C-h>
+"        nnoremap <expr> <F5> ":<C-u>Grepper -dir cwd -tool rg -noprompt -query '\\b" . expand('<cword>') . "\\b' "
+"        nnoremap <expr> <F6> ":<C-u>Grepper-buffers -dir cwd -tool rg -noprompt -query '\\b" . expand('<cword>') . "\\b' "
+"elseif exists(':GrepperGrep')
+"        vnoremap <F5> <Esc>:<C-u>Grepper -dir cwd -tool grep -noprompt -query '\<<C-r>=GetVisual('grep')<CR>\>'  <C-h>
+"        vnoremap <F6> <Esc>:<C-u>Grepper-buffers -dir cwd -tool grep -noprompt -query '\<<C-r>=GetVisual('grep')<CR>\>'  <C-h>
+"        nnoremap <expr> <F5> ":<C-u>Grepper -dir cwd -tool grep -noprompt -query '\\<" . expand('<cword>') . "\\>' "
+"        nnoremap <expr> <F6> ":<C-u>Grepper-buffers -dir cwd -tool grep -noprompt -query '\\<" . expand('<cword>') . "\\>' "
+"    endif
 "vim-Grep END
 
 "Gutentags START
 "https://www.zhihu.com/question/47691414/answer/373700711
 " gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
+" hg是mercury管理工具
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
@@ -532,6 +594,9 @@ nnoremap <leader>7 :NERDTreeFind<CR>
 "centos 7.6的字符有问题，所以用这个替换
 "let NERDTreeDirArrowExpandable=">"
 "let NERDTreeDirArrowCollapsible="v"
+"Directories will appear first alphabetically, followed by files, sorted by timestamp, newest first.
+let g:NERDTreeSortOrder=['\/$', '*', '[[-timestamp]]']
+
 "NERDTree END
 
 "Rainbow START
@@ -539,7 +604,7 @@ au FileType c,cpp,objc,objcpp call rainbow#load()
 "Rainbow END
 
 "Quickfix START
-map <leader>1 :copen<CR>
+map leader1 :copenCR
 map <leader>2 :cclose<CR>
 " 异步运行命令时打开 quickfix 窗口，高度为 10 行
 "let g:asyncrun_open = 10
@@ -568,6 +633,7 @@ nmap <F3> :TagbarToggle<CR>
 
 "Table-mode START
 "Markdown 里的表格撰写
+let b:table_mode_corner = '|'
 function! s:isAtStartOfLine(mapping)
   let text_before_cursor = getline('.')[0 : col('.')-1]
   let mapping_pattern = '\V' . escape(a:mapping, '\')
@@ -626,3 +692,12 @@ let g:ycm_goto_buffer_command = 'split-or-existing-window'
 "，在某些操作系统上是不能用的（如 Mac 和老的 Windows），所以我改成了
 let g:ycm_key_invoke_completion = '<C-Z>'
 "YouCompleteMe END
+ 
+"打开文件自动回到上次的退出的行
+"autocmd BufReadPost *
+     "\   echo("hello") |
+     ""\ if line("'\"") > 0 && line("'\"") <= line("$") |
+     "\   exe "normal! g`\"" |
+     ""\ endif
+autocmd BufReadPost * normal! g`"zv 
+"autocmd BufReadPost * silent! normal! g`"zv
