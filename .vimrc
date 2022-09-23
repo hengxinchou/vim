@@ -149,6 +149,8 @@ set shm+=I
 "如果打开一个窗口多个文件，设置自动保存比较好，idea等自动保存
 "vscode其实也会缓存备份，不会丢失
 "nnoremap <Leader>6 :set autowrite<CR>
+command! BufCurOnly execute '%bdelete|edit #|normal `"'
+nnoremap <C-B>c :BufCurOnly<CR>
 
 "au BufNewFile,BufRead *.c			colorscheme ayu |let ayucolor="light" 
 "au BufNewFile,BufRead *.c			let g:material_theme_style = 'lighter' 
@@ -203,6 +205,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'Valloric/YouCompleteMe'
 "如果没有安装clangd的YCM，则可以用rtags进行查找引用，比较快
 Plug 'lyuts/vim-rtags'
+"indent对齐，很直观，像pycharm那样
+"Plug 'nathanaelkane/vim-indent-guides'
 "类似idea，文本结构缩略图
 Plug 'preservim/tagbar'
 "用于替代tagbar的
@@ -233,7 +237,7 @@ Plug 'mbbill/undotree'
 "提供uninx的常用命令，它提供的 :Rename 和 :Move 命令，后面跟的参数就是新的名字或路径
 Plug 'tpope/vim-eunuch'
 "主题方案
-"Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 Plug 'nanotech/jellybeans.vim'
 Plug 'mbbill/desertEx'
 Plug 'junegunn/seoul256.vim'
@@ -564,6 +568,12 @@ let g:loaded_netrw       = 0
 let g:loaded_netrwPlugin = 0
 "Netrw END
 
+"Vim-Plugin START
+command! MyPlugInstall execute ':w|so ~/.vimrc|PlugInstall'
+nnoremap <F8> :MyPlugInstall<CR>
+" map <F8> :w|so ~/.vimrc|PlugInstall<CR>
+"Vim-Plugin START
+
 "NERDTree START
 map <F1> :NERDTreeToggle<cr>
 "当打开某个文件时，就把目录切换到该文件的目录下
@@ -684,7 +694,6 @@ let g:ycm_filetype_whitelist = {
       \ 'c': 1,
       \ 'cpp': 1,
       \ 'python': 1,
-      \ 'vim': 1,
       \ 'sh': 1,
       \ 'zsh': 1,
       \ }

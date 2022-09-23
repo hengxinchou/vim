@@ -23,8 +23,9 @@ source $ZSH/oh-my-zsh.sh
 export MANPAGER="vim -M +MANPAGER -"
 
 #fzf 可以利用 ripgrep 来自动过滤掉被 Git 忽略的文件、隐藏文件、二进制文件等程序员通常不关心的内容，并将结果以修改时间倒排，确保最新修改的文件在最下面，大大提高了迅速找到你需要的文件的概率
-export FZF_DEFAULT_COMMAND='rg --files --sortr modified'
-#export FZF_DEFAULT_COMMAND="fd --exclude={.git,.idea,.vscode,.sass-cache,node_modules,build} --type f"
+export FZF_DEFAULT_COMMAND='rg --files --sortr modified' 
+export FZF_DEFAULT_OPTS='--layout=reverse --border --preview "bat --style=numbers --color=always --line-range :500 {}"'
+#export FZF_DEFAULT_COMMAND="$FZF_DEFAULT_COMMAND fd --exclude={.git,.idea,.vscode,.sass-cache,node_modules,build} --type f"
 alias l.="ls -ad .*"
 
 export TAGSLABEL=native-pygments
