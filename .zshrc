@@ -26,3 +26,7 @@ export MANPAGER="vim -M +MANPAGER -"
 export FZF_DEFAULT_COMMAND='rg --files --sortr modified'
 #export FZF_DEFAULT_COMMAND="fd --exclude={.git,.idea,.vscode,.sass-cache,node_modules,build} --type f"
 alias l.="ls -ad .*"
+
+export TAGSLABEL=native-pygments
+export GTAGSCONF=/opt/homebrew/Cellar/global/6.6.8/share/gtags/gtags.conf
+

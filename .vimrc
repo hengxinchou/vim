@@ -74,7 +74,9 @@ nnoremap <Leader>5 :source ~/.vimrc<cr>
 "打开当前文件的所在目录，查看同一目录的别的文件有用
 map <leader>8 :e %:h<CR>
 "只留下当前缓存区，删除其他缓存区
-"map <leader>9 :%bd|e\#<CR>
+"cap <leader>9 exe command "%bd |e \#"<CR>
+command! BufOnly execute '%bdelete|edit #|normal `"'
+nnoremap <C-B>c :BufCurOnly<CR>
 "对于直接切换到文件所在目录非常有用, 有了:NERDTeeFind和":e %:H"感觉就没什么用了
 "nnoremap <Leader>cd :lcd %:h<CR>
 
@@ -151,13 +153,15 @@ set shm+=I
 "au BufNewFile,BufRead *.c			colorscheme ayu |let ayucolor="light" 
 "au BufNewFile,BufRead *.c			let g:material_theme_style = 'lighter' 
 "au FileType c,cpp,objc,objcpp			let g:material_theme_style = 'lighter' 
-au FileType c,cpp,objc,objcpp			set expandtab
+au FileType c,cpp,objc,objcpp      set expandtab
 "c、cpp、java等都自动显示行号
-au FileType c,cpp,objc,objcpp			set nu
-au FileType c,cpp,objc,objcpp			set autoindent
+au FileType c,cpp,objc,objcpp      set nu
+au FileType c,cpp,objc,objcpp      set autoindent
 
-au FileType java			set nu
-au FileType sh			set nu
+au FileType java	           set nu
+au FileType sh		           set nu
+au FileType zsh		           set nu
+au FileType vim		           set nu
 
 "如何让vim退出「插入模式」的时候自动切换为英文输入法？ - 知乎用户WEBOMp的回答 - 知乎
 "https://www.zhihu.com/question/341748857/answer/1739052604
@@ -701,3 +705,9 @@ let g:ycm_key_invoke_completion = '<C-Z>'
      ""\ endif
 autocmd BufReadPost * normal! g`"zv 
 "autocmd BufReadPost * silent! normal! g`"zv
+
+
+au FileType java	           colo morning
+
+let $GTAGSLABEL='native-pygments'
+let $GTAGSCONF='/opt/homebrew/Cellar/global/6.6.8/share/gtags/gtags.conf'
