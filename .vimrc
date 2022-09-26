@@ -43,6 +43,7 @@ set hlsearch
 "在Tagbar中过滤，显示使用递进搜索会比较方便，但正常时候不需要启动递进搜索，因为递进搜索容易污染屏幕 \
 "set incsearch<CR>
 "禁止在搜索到文件两端时重新搜索
+set nohlsearch
 set nowrapscan 
 "递进搜索, 输入搜索内容时就显示搜索结果
 "set incsearch 
@@ -398,12 +399,12 @@ if executable("gtags-cscope")
         if filereadable("GRTAGS")
             cs add GRTAGS
         endif
-        if filereadable("GPATH")
-            cs add GPATH
-        endif
-        if filereadable("GTAGS")
-            cs add GTAGS
-        endif
+        "if filereadable("GPATH")
+            "cs add GPATH
+        "endif
+        "if filereadable("GTAGS")
+            "cs add GTAGS
+        "endif
         set csverb
 endif
 "Cscope
@@ -441,7 +442,7 @@ nnoremap <F2> :Files<CR>
 "set guifont=DejaVu Sans Mono for Powerline:h18
 "set guifont=Fira\ Code:h22
 "set guifont=Source\ Code\ Pro:h18
-set guifont=FiraCode\ Nerd\ Font:h18
+set guifont=FiraCode\ Nerd\ Font:h14
 "colorscheme desertEx
 "colorscheme material
 "let g:material_theme_style = 'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
@@ -680,8 +681,8 @@ au FileType c,cpp,objc,objcpp call rainbow#load()
 "Rainbow END
 
 "Quickfix START
-map leader1 :copenCR
-map <leader>2 :cclose<CR>
+map <Leader>1 :copen<CR>
+map <Leader>2 :cclose<CR>
 " 异步运行命令时打开 quickfix 窗口，高度为 10 行
 "let g:asyncrun_open = 10
 "剩下最后一个quickfix自动关闭
