@@ -362,7 +362,7 @@ endif
 "cscope使用quickfix进行快速跳转。不设置的话会出现一个很长的列表让你选择
 "s:symbol,c:call(被那些函数调用), d:called(被这个函数调用的), i:include,
 "t:text, e: egrep,f:file, a:assigned    
-set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
+set cscopequickfix=s-,c-,d-,i-,t-,e-,a-,g-
 "来自if_cscop.txt的快捷键推荐
 nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
 nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
